@@ -24,8 +24,14 @@
           </p>
         </b-card-text>
         <div class="card-btn">
-          <i class="fa-solid fa-xmark fa-2x pointer reject-auth-icon"></i>
-          <i class="fa-solid fa-check fa-2x pointer accept-auth-icon"></i>
+          <i
+            @click="rejectAuth()"
+            class="fa-solid fa-xmark fa-2x pointer reject-auth-icon"
+          ></i>
+          <i
+            @click="acceptAuth()"
+            class="fa-solid fa-check fa-2x pointer accept-auth-icon"
+          ></i>
         </div>
       </b-card>
     </div>
@@ -37,6 +43,10 @@ export default {
   name: "Authentication",
   props: {
     authentications: Array,
+  },
+  methods: {
+    rejectAuth() {},
+    acceptAuth() {},
   },
 };
 </script>
@@ -63,6 +73,6 @@ export default {
 }
 .accept-auth-icon {
   color: #274c77;
-  margin-right: 7px;
+  margin-right: 10px;
 }
 </style>

@@ -17,7 +17,7 @@
     <div>
       <b-tabs
         class=""
-        active-nav-item-class="font-weight-bold text-danger bg-light bg-gradient"
+        active-nav-item-class="bg-light bg-gradient"
         justified
       >
         <b-tab title="بررسی احراز هویت‌ها" title-link-class="text-dark" active

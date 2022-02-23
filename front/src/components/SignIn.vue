@@ -62,7 +62,7 @@ export default {};
 }
 .check-text {
   text-align: left;
-  color: #8b8c89;
+  color: #274c77;
 }
 .card-shadow {
   box-shadow: 0 5px 10px -6px rgb(0 0 0 / 15%);

@@ -26,7 +26,7 @@
             title="اطلاعات کاربری"
             tag="article"
             style="width: 20rem; height:15rem"
-            class="mb-2 card-shadow"
+            class="mb-2 card-shadow user-card"
           >
             <b-card-body>
               <div class="card-body text-center user-card-body">
@@ -82,7 +82,7 @@
             title="ثبت درخواست افزودن استاد"
             tag="article"
             style="width: 40rem; height: 15rem"
-            class="mb-2 card-shadow"
+            class="mb-2 card-shadow user-card"
           >
             <b-card-body>
               <b-form>
@@ -158,7 +158,7 @@ export default {
 </script>
 
 <style>
-.user-card .card .card-title {
+.user-card .card-title {
   color: #274c77 !important;
 }
 .user-card-body {
@@ -198,5 +198,9 @@ a:hover {
 .auth-btn,
 .req-btn {
   background-color: #274c77 !important;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
 }
 </style>
