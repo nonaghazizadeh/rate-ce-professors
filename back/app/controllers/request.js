@@ -43,4 +43,16 @@ async function create(req, res) {
     };
 };
 
-export { create };
+function get_all(req, res) {
+    Requests.findAll({})
+    .then(data => {
+        res.send(data);
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message
+          });
+    });
+};
+
+export { create, get_all };
