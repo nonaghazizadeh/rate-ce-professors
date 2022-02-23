@@ -1,7 +1,7 @@
 import db from '../models/index.js'
 
 const Professors = db.professors;
-const Comments = db.comments;
+const Requests = db.requests;
 
 function create(req, res) {
     const {name, email, image_url, info} = req.body;
@@ -29,6 +29,16 @@ function create(req, res) {
             message: err.message || 'Error while creating professor!'
         });
     });
+
+    Requests.destroy({
+        where: {name: name}
+    })
+    .then(data => {
+        console.log(data.name + "deleted");
+    })
+    .catch(err => {
+        console.log("could not delete " + data.name + " cause of" + err.message)
+    })
 };
 
 function find_all(req, res) {

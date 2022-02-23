@@ -16,8 +16,8 @@ async function create(req, res) {
         where: {name: name}
     });
     if (prof != null) {
-        res.send({
-            message: "استاد مورد نظر موجود است."
+        res.status(400).send({
+            message: "professor already exists."
         })
         return;
     };
