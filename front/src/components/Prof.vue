@@ -41,32 +41,81 @@
             </div>
             <div class="row">
               <div
-                class="mt-3 col-1 progress fourth"
+                class="mt-3 col-2 progress fourth"
+                :style="[
+                  management_avg < 50
+                    ? {
+                        '--fg': '#bb435d',
+                        '--bg': '#f4e1e1',
+                        '--value': management_avg,
+                      }
+                    : {
+                        '--fg': '#274c77',
+                        '--bg': '#def',
+                        '--value': management_avg,
+                      },
+                ]"
+                role="progressbar"
+                aria-valuemin="0"
+                :aria-valuenow="management_avg"
+                aria-valuemax="100"
+              ></div>
+              <div
+                class="mt-3 col-2 progress third"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                :style="'--value: ' + management_avg"
+                :style="[
+                  grading_avg < 50
+                    ? {
+                        '--fg': '#bb435d',
+                        '--bg': '#f4e1e1',
+                        '--value': grading_avg,
+                      }
+                    : {
+                        '--fg': '#274c77',
+                        '--bg': '#def',
+                        '--value': grading_avg,
+                      },
+                ]"
               ></div>
               <div
-                class="mt-3 col-1 progress third"
+                class="mt-3 col-2 progress second"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                :style="'--value: ' + grading_avg"
+                :style="[
+                  teaching_avg < 50
+                    ? {
+                        '--fg': '#bb435d',
+                        '--bg': '#f4e1e1',
+                        '--value': teaching_avg,
+                      }
+                    : {
+                        '--fg': '#274c77',
+                        '--bg': '#def',
+                        '--value': teaching_avg,
+                      },
+                ]"
               ></div>
               <div
-                class="mt-3 col-1 progress second"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                :style="'--value: ' + teaching_avg"
-              ></div>
-              <div
-                class="mt-3 col-1 progress first"
+                class="mt-3 col-2 progress first"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="5"
-                :style="'--value: ' + ethic_avg"
+                :style="[
+                  ethic_avg < 50
+                    ? {
+                        '--fg': '#bb435d',
+                        '--bg': '#f4e1e1',
+                        '--value': ethic_avg,
+                      }
+                    : {
+                        '--fg': '#274c77',
+                        '--bg': '#def',
+                        '--value': ethic_avg,
+                      },
+                ]"
               ></div>
             </div>
           </div>
@@ -157,7 +206,7 @@
                   </div>
                 </div>
               </div>
-              <div class="mt-3" v-if="auth_status">
+              <div class="mt-3 col-12" v-if="auth_status">
                 <form id="algin-form" class="add-comment">
                   <div class="form-group">
                     <h4 class="add-rate-title">ثبت امتیاز</h4>
@@ -357,8 +406,7 @@ export default {
 
 div[role="progressbar"] {
   --size: 3rem;
-  --fg: #274c77;
-  --bg: #def;
+
   --pgPercentage: var(--value);
   animation: growProgressBar 3s 1 forwards;
   width: var(--size);
@@ -389,7 +437,7 @@ div[role="progressbar"]::before {
   content: "تدریس";
 }
 .third[role="progressbar"]::before {
-  content: "نمره‌دهی";
+  content: "نمره";
 }
 .fourth[role="progressbar"]::before {
   content: "مدیریت";
@@ -541,5 +589,16 @@ label {
 .edit-modal-close-btn,
 .edit-modal-close-btn:hover {
   background-color: #bb435d;
+}
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #6096ba !important;
+  border-color: #274c77 !important;
+}
+.custom-control-label {
+  color: #274c77 !important;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
 }
 </style>
