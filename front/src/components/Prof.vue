@@ -6,15 +6,25 @@
         <b-navbar-nav class="mr-auto">
           <b-nav-form>
             <b-button size="sm" class="m-2 my-sm-0 px-3 navbar-btn"
-              ><router-link :to="{ path: '/register' }"
-                >ورود / ثبت‌نام</router-link
-              ></b-button
+              ><router-link
+                v-if="this.$store.state.userId === ''"
+                :to="{ path: '/register' }"
+                >ورود/ ثبت‌نام
+              </router-link>
+              <router-link
+                v-if="this.$store.state.userId !== ''"
+                :to="{ name: 'user', params: { id: this.$store.state.userId } }"
+                replace
+              >
+                پروفایل من
+              </router-link></b-button
             >
           </b-nav-form>
         </b-navbar-nav>
       </b-navbar>
     </div>
-    <div class="container mt-5">
+    <loader v-if="loading" />
+    <div v-if="!loading" class="container mt-5">
       <div class="row mt-3">
         <div class="col-3 info-part">
           <div class="position-fixed">
@@ -22,14 +32,10 @@
               <div class="card">
                 <div class="card-body text-center front-card-body">
                   <p>
-                    <img
-                      class="img-fluid"
-                      src="https://i.imgur.com/zLCYdR9.jpg"
-                      alt="card image"
-                    />
+                    <img class="img-fluid" :src="image_url" alt="card image" />
                   </p>
-                  <h4 class="card-title">امید جعفری‌نژاد</h4>
-                  <p>omidjafari@gmail.com</p>
+                  <h4 class="card-title">{{ name }}</h4>
+                  <p>{{ email }}</p>
                 </div>
               </div>
             </div>
@@ -37,34 +43,30 @@
               <div
                 class="mt-3 col-1 progress fourth"
                 role="progressbar"
-                aria-valuenow="65"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                style="--value: 65"
+                :style="'--value: '+ management_avg" 
               ></div>
               <div
                 class="mt-3 col-1 progress third"
                 role="progressbar"
-                aria-valuenow="65"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                style="--value: 35"
+                :style="'--value: '+ grading_avg" 
               ></div>
               <div
                 class="mt-3 col-1 progress second"
                 role="progressbar"
-                aria-valuenow="65"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                style="--value: 35"
+                :style="'--value: '+ teaching_avg" 
               ></div>
               <div
                 class="mt-3 col-1 progress first"
                 role="progressbar"
-                aria-valuenow="3"
                 aria-valuemin="0"
                 aria-valuemax="5"
-                style="--value: 3"
+                :style="'--value: '+ ethic_avg" 
               ></div>
             </div>
           </div>
@@ -120,7 +122,11 @@
                         >
                           ویرایش
                         </b-button>
-                        <b-button size="sm" class="edit-modal-close-btn" @click="cancel()">
+                        <b-button
+                          size="sm"
+                          class="edit-modal-close-btn"
+                          @click="cancel()"
+                        >
                           بستن
                         </b-button>
                       </template>
@@ -151,7 +157,7 @@
                   </div>
                 </div>
               </div>
-              <div class="mt-3">
+              <div class="mt-3" v-if="auth_status">
                 <form id="algin-form" class="add-comment">
                   <div class="form-group">
                     <h4 class="add-rate-title">ثبت امتیاز</h4>
@@ -227,53 +233,91 @@
 </template>
 
 <script>
+import axios from "axios";
+import Loader from "./Loader.vue";
+
 export default {
-  components: {},
+  components: {
+    Loader,
+  },
   data() {
     return {
-      editableComments: [
-        {
-          id: 1,
-          author: "نونا قاضی زاده",
-          comment:
-            "در ترم پاییز ۹۹ درس برنامه سازی وب را با استاد امید جعفری نژاد گذراندم. این درس برای من بسیار کاربردی و مفید بود. درسی است که هم در صنعت و هم در کارهای پژوهشی کاربرد دارد. استاد بسیار مسلط له درس و محتوای درس است. بسیار خوش اخلاق و در صورت رخداد شرایطی خاص استاد تا جایی که امکانش باشد همکاری می کنند.",
-        },
-        {
-          id: 2,
-          author: "نونا قاضی زاده",
-          comment:
-            "در ترم پاییز ۹۹ درس برنامه سازی وب را با استاد امید جعفری نژاد گذراندم. این درس برای من بسیار کاربردی و مفید بود. درسی است که هم در صنعت و هم در کارهای پژوهشی کاربرد دارد. استاد بسیار مسلط له درس و محتوای درس است. بسیار خوش اخلاق و در صورت رخداد شرایطی خاص استاد تا جایی که امکانش باشد همکاری می کنند.",
-        },
-      ],
-      nonEditableComments: [
-        {
-          id: 3,
-          author: "شایان محمدی زاده",
-          comment:
-            "در ترم پاییز ۹۹ درس برنامه سازی وب را با استاد امید جعفری نژاد گذراندم. این درس برای من بسیار کاربردی و مفید بود. درسی است که هم در صنعت و هم در کارهای پژوهشی کاربرد دارد. استاد بسیار مسلط له درس و محتوای درس است. بسیار خوش اخلاق و در صورت رخداد شرایطی خاص استاد تا جایی که امکانش باشد همکاری می کنند.",
-        },
-        {
-          id: 4,
-          author: "بی نام",
-          comment:
-            "در ترم پاییز ۹۹ درس برنامه سازی وب را با استاد امید جعفری نژاد گذراندم. این درس برای من بسیار کاربردی و مفید بود. درسی است که هم در صنعت و هم در کارهای پژوهشی کاربرد دارد. استاد بسیار مسلط له درس و محتوای درس است. بسیار خوش اخلاق و در صورت رخداد شرایطی خاص استاد تا جایی که امکانش باشد همکاری می کنند.",
-        },
-      ],
+      auth_status: false,
+      loading: true,
+      image_url: "",
+      name: "",
+      email: "",
+      editableComments: [],
+      nonEditableComments: [],
       status: "no_show",
       ethic_value: 0,
       teaching_value: 0,
       grading_value: 0,
       management_value: 0,
+      ethic_avg: 0,
+      teaching_avg: 0,
+      grading_avg: 0,
+      management_avg: 0,
     };
   },
   methods: {
     modalId(i) {
       return "modal" + i;
     },
+    getInitialData() {
+      if (this.$store.state.userId !== "") {
+        this.getProfessorData().then(() => {
+          this.getUserAuthStatus();
+        });
+      } else {
+        this.getProfessorData();
+      }
+    },
+    getUserAuthStatus() {
+      axios
+        .get(
+          `https://617534a508834f0017c70b5c.mockapi.io/api/v1/users/` +
+            this.$store.state.userId
+        )
+        .then((response) => {
+          this.auth_status = response.data.auth_status
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    getProfessorData() {
+      return axios
+        .get(
+          `https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs/` +
+            this.$route.params.id
+        )
+        .then((response) => {
+          this.image_url = response.data.image_url;
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.ethic_avg = response.data.ethic_avg;
+          this.teaching_avg = response.data.teaching_avg;
+          this.grading_avg = response.data.grading_avg;
+          this.management_avg = response.data.management_avg;
+          this.editableComments = response.data.editable_comments;
+          this.nonEditableComments = response.data.non_editable_comments;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          if (this.$store.state.userId === "") {
+            this.loading = false;
+          }
+        });
+    },
   },
-
   created() {
-    console.log(this.$route.params.id);
+    this.getInitialData();
   },
 };
 </script>
@@ -493,7 +537,7 @@ label {
   color: #274c77 !important;
 }
 .edit-modal-close-btn,
-.edit-modal-close-btn:hover{
+.edit-modal-close-btn:hover {
   background-color: #bb435d;
 }
 </style>
