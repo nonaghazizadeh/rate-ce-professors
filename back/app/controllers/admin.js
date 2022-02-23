@@ -22,7 +22,7 @@ async function login(req, res) {
         res.send(admin);
     } else {
         res.status(400).send({
-            message: "Admin does not exist"
+            message: "Can not login!"
         });
     }
 };

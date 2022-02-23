@@ -91,7 +91,8 @@ async function login(req, res) {
     const stu = await Students.findOne({
         where: {
             student_number: student_number,
-            code_meli: code_meli
+            code_meli: code_meli,
+            status: "accept"
         }
     });
     if (stu) {
@@ -100,7 +101,7 @@ async function login(req, res) {
         });
     } else {
         res.status(400).send({
-            message: "User does not exist"
+            message: "Can not login!"
         });
     };
 };
