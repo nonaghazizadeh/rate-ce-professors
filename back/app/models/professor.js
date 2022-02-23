@@ -9,7 +9,7 @@ function create_professor_model(sequelize, Sequelize) {
             type: Sequelize.STRING,
             unique: true,
             validate: {
-                notNull: true,
+                allowNull: true,
                 notEmpty: true,
             }
         },

@@ -8,14 +8,14 @@ function create_admin_model(sequelize, Sequelize) {
         username: {
             type: Sequelize.STRING,
             validate: {
-                notNull: true,
+                allowNull: true,
                 notEmpty: true,
             }
         },
         password: {
             type: Sequelize.STRING,
             validate: {
-                notNull: true,
+                allowNull: true,
                 notEmpty: true,
             }
         }
