@@ -12,7 +12,7 @@
     <div class="container h-100 register-container">
       <div class="d-flex justify-content-center">
         <b-card
-          title=" ثبت نام کاربر"
+          title="ثبت نام کاربر"
           tag="article"
           style="width: 40rem"
           class="mb-2 card-shadow"
