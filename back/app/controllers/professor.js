@@ -1,6 +1,7 @@
 import db from '../models/index.js'
 
 const Professors = db.professors;
+const Comments = db.comments;
 
 function create(req, res) {
     const {name, email, image_url, info} = req.body;
@@ -91,4 +92,22 @@ function rate(req, res) {
     });
 };
 
-export { create, find_all, rate };
+function find_one(req, res) {
+    console.log('\n\n\n')
+    const { id } = req.query;
+    if ([id].includes(undefined)) {
+        res.status(400).send({
+            message: "provide all parameters."
+        });
+        return;
+    };
+
+    db.sequelize.query(
+        'select * from professor as p where id = ? inner join comments as c on c.professorId = p.id',
+        { replacements: [id], type: db.sequelize.QueryTypes.SELECT }
+    ).then(data => {
+        console.log(data);
+    })
+};
+
+export { create, find_all, rate, find_one };
