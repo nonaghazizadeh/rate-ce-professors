@@ -25,7 +25,7 @@ db.professors = create_professor_model(sequelize, Sequelize);
 db.students = create_student_model(sequelize, Sequelize);
 db.admins = create_admin_model(sequelize, Sequelize);
 db.comments = create_comment_model(sequelize, Sequelize);
-db.comments.belongsTo(db.students);
-db.comments.belongsTo(db.professors);
+db.comments.belongsTo(db.students, {foreignKey: {name: 'stu_id'}});
+db.comments.belongsTo(db.professors, {foreignKey: {name: 'prof_id'}});
 
 export default db;

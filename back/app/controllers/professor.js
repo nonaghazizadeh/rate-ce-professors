@@ -92,22 +92,42 @@ function rate(req, res) {
     });
 };
 
-function find_one(req, res) {
+async function find_one(req, res) {
     console.log('\n\n\n')
-    const { id } = req.query;
-    if ([id].includes(undefined)) {
+    const { prof_id, stu_id } = req.query;
+    if ([prof_id, stu_id].includes(undefined)) {
         res.status(400).send({
             message: "provide all parameters."
         });
         return;
     };
 
-    db.sequelize.query(
-        'select * from professor as p where id = ? inner join comments as c on c.professorId = p.id',
-        { replacements: [id], type: db.sequelize.QueryTypes.SELECT }
-    ).then(data => {
-        console.log(data);
+    const prof_data = await Professors.findOne({
+        where: {id: prof_id}
     })
+
+    const editable_comments = await db.sequelize.query(
+        'select c.id, concat_ws(\' \', s.firstname, s.lastname) AS author, c.content, c.show_name from comments c inner join students s on c.stu_id = s.id where s.id=?',
+        { replacements: [stu_id], type: db.sequelize.QueryTypes.SELECT }
+    )
+
+    const non_editable_comments = await db.sequelize.query(
+        'select c.id, concat_ws(\' \', s.firstname, s.lastname) AS author, c.content, c.show_name from comments c inner join students s on c.stu_id = s.id where s.id!=?',
+        { replacements: [stu_id], type: db.sequelize.QueryTypes.SELECT }
+    )
+
+    res.send({
+        name: prof_data.name,
+        image_url: prof_data.image_url,
+        email: prof_data.email,
+        info: prof_data.info,
+        ethic_avg: prof_data.ethic,
+        teaching_avg: prof_data.teaching,
+        grading_avg: prof_data.grading,
+        management_avg: prof_data.management,
+        editable_comments: editable_comments,
+        non_editable_comments: non_editable_comments
+    });
 };
 
 export { create, find_all, rate, find_one };

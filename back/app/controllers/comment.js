@@ -12,8 +12,8 @@ function create(req, res) {
     };
     
     Commets.create({
-        professorId: prof_id,
-        studentId: stu_id,
+        prof_id: prof_id,
+        stu_id: stu_id,
         content: content,
         show_name: show_name
     }).then(data => {
