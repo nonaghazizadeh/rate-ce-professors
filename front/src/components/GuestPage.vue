@@ -6,10 +6,19 @@
         <b-navbar-nav class="mr-auto">
           <b-nav-form>
             <b-button size="sm" class="m-2 my-sm-0 px-3 navbar-btn"
-              ><router-link :to="{ path: '/register' }"
-                >ورود / ثبت‌نام</router-link
-              ></b-button
-            >
+              ><router-link
+                v-if="this.$store.state.userId === ''"
+                :to="{ path: '/register' }"
+                >ورود/ ثبت‌نام
+              </router-link>
+              <router-link
+                v-if="this.$store.state.userId !== ''"
+                :to="{ name: 'user', params: { id: this.$store.state.userId } }"
+                replace
+              >
+                پروفایل من
+              </router-link>
+            </b-button>
           </b-nav-form>
         </b-navbar-nav>
       </b-navbar>
@@ -75,30 +84,38 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Loader from './Loader.vue'
+import axios from "axios";
+import Loader from "./Loader.vue";
 
 export default {
   name: "GuestPage",
   components: {
-    Loader
+    Loader,
   },
   created() {
-    axios.get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs`)
-    .then(response => {
-      this.professors = response.data
-      this.loading = false
-    })
-    .catch(e => {
-      console.error(e)
-      this.loading = false
-    })
+    this.getProfessorsData();
   },
   data() {
     return {
       loading: true,
       professors: [],
     };
+  },
+  methods: {
+    getProfessorsData() {
+      axios
+        .get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs`)
+        .then((response) => {
+          console.log(response.data);
+          this.professors = response.data;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
   },
 };
 </script>
