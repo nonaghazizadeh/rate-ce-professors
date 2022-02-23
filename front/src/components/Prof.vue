@@ -45,28 +45,28 @@
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                :style="'--value: '+ management_avg" 
+                :style="'--value: ' + management_avg"
               ></div>
               <div
                 class="mt-3 col-1 progress third"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                :style="'--value: '+ grading_avg" 
+                :style="'--value: ' + grading_avg"
               ></div>
               <div
                 class="mt-3 col-1 progress second"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                :style="'--value: '+ teaching_avg" 
+                :style="'--value: ' + teaching_avg"
               ></div>
               <div
                 class="mt-3 col-1 progress first"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="5"
-                :style="'--value: '+ ethic_avg" 
+                :style="'--value: ' + ethic_avg"
               ></div>
             </div>
           </div>
@@ -280,7 +280,9 @@ export default {
             this.$store.state.userId
         )
         .then((response) => {
-          this.auth_status = response.data.auth_status
+          if (response.data.auth_status === "accept") {
+            this.auth_status = true;
+          }
         })
         .catch((e) => {
           console.error(e);
