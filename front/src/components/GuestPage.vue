@@ -6,15 +6,25 @@
         <b-navbar-nav class="mr-auto">
           <b-nav-form>
             <b-button size="sm" class="m-2 my-sm-0 px-3 navbar-btn"
-              ><router-link :to="{ path: '/register' }"
-                >ورود / ثبت‌نام</router-link
-              ></b-button
-            >
+              ><router-link
+                v-if="this.$store.state.userId === ''"
+                :to="{ path: '/register' }"
+                >ورود/ ثبت‌نام
+              </router-link>
+              <router-link
+                v-if="this.$store.state.userId !== ''"
+                :to="{ name: 'user', params: { id: this.$store.state.userId } }"
+                replace
+              >
+                پروفایل من
+              </router-link>
+            </b-button>
           </b-nav-form>
         </b-navbar-nav>
       </b-navbar>
     </div>
-    <div class="container mt-5">
+    <loader v-if="loading" />
+    <div v-if="!loading" class="container mt-5">
       <div class="row professors-container">
         <div
           v-for="prof in professors"
@@ -74,55 +84,38 @@
 </template>
 
 <script>
+import axios from "axios";
+import Loader from "./Loader.vue";
+
 export default {
   name: "GuestPage",
+  components: {
+    Loader,
+  },
+  created() {
+    this.getProfessorsData();
+  },
   data() {
     return {
-      professors: [
-        {
-          id: 1,
-          name: "دکتر امید جعفری",
-          image_url: "https://i.imgur.com/zLCYdR9.jpg",
-          email: "nonaaghazizadeh@gmail.com",
-          info: "استاد امید جعفری نژاد از اعضای هیئت علمی دانشکده مهندسی کامپیوتر هستندو مدرک دکتری خود را از دانشگاه تهران در سال ۱۳۶۷ اخذ کرده‌اند.",
-        },
-        {
-          id: 2,
-          name: "دکتر امید جعفری",
-          image_url: "https://i.imgur.com/zLCYdR9.jpg",
-          email: "nonaaghazizadeh@gmail.com",
-          info: "استاد امید جعفری نژاد از اعضای هیئت علمی دانشکده مهندسی کامپیوتر هستندو مدرک دکتری خود را از دانشگاه تهران در سال ۱۳۶۷ اخذ کرده‌اند.",
-        },
-        {
-          id: 3,
-          name: "دکتر امید جعفری",
-          image_url: "https://i.imgur.com/zLCYdR9.jpg",
-          email: "nonaaghazizadeh@gmail.com",
-          info: "استاد امید جعفری نژاد از اعضای هیئت علمی دانشکده مهندسی کامپیوتر هستندو مدرک دکتری خود را از دانشگاه تهران در سال ۱۳۶۷ اخذ کرده‌اند.",
-        },
-        {
-          id: 4,
-          name: "دکتر امید جعفری",
-          image_url: "https://i.imgur.com/zLCYdR9.jpg",
-          email: "nonaaghazizadeh@gmail.com",
-          info: "استاد امید جعفری نژاد از اعضای هیئت علمی دانشکده مهندسی کامپیوتر هستندو مدرک دکتری خود را از دانشگاه تهران در سال ۱۳۶۷ اخذ کرده‌اند.",
-        },
-        {
-          id: 5,
-          name: "دکتر امید جعفری",
-          image_url: "https://i.imgur.com/zLCYdR9.jpg",
-          email: "nonaaghazizadeh@gmail.com",
-          info: "استاد امید جعفری نژاد از اعضای هیئت علمی دانشکده مهندسی کامپیوتر هستندو مدرک دکتری خود را از دانشگاه تهران در سال ۱۳۶۷ اخذ کرده‌اند.",
-        },
-        {
-          id: 6,
-          name: "دکتر امید جعفری",
-          image_url: "https://i.imgur.com/zLCYdR9.jpg",
-          email: "nonaaghazizadeh@gmail.com",
-          info: "استاد امید جعفری نژاد از اعضای هیئت علمی دانشکده مهندسی کامپیوتر هستندو مدرک دکتری خود را از دانشگاه تهران در سال ۱۳۶۷ اخذ کرده‌اند.",
-        },
-      ],
+      loading: true,
+      professors: [],
     };
+  },
+  methods: {
+    getProfessorsData() {
+      axios
+        .get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs`)
+        .then((response) => {
+          console.log(response.data);
+          this.professors = response.data;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
   },
 };
 </script>

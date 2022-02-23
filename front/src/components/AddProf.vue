@@ -5,11 +5,30 @@
         <b-col class="mt-5" cols="6">
           <div class="table">
             <b-table
+              :busy="loading"
               :items="items"
               :fields="fields"
               sticky-header="400px"
-              class="prof-table"
-            ></b-table>
+              style="height: 25rem"
+              class="prof-table card-shadow"
+              show-empty
+            >
+              <template #table-busy>
+                <div class="loader-circle">
+                  <span class="circle circle-1"></span>
+                  <span class="circle circle-2"></span>
+                  <span class="circle circle-3"></span>
+                  <span class="circle circle-4"></span>
+                  <span class="circle circle-5"></span>
+                  <span class="circle circle-6"></span>
+                  <span class="circle circle-7"></span>
+                  <span class="circle circle-8"></span>
+                </div>
+              </template>
+              <template #empty>
+                <h4>هیج درخواستی وجود ندارد.</h4>
+              </template>
+            </b-table>
           </div>
         </b-col>
         <b-col class="add-card d-flex justify-content-center" cols="6">
@@ -17,7 +36,7 @@
             <b-card
               title="افزودن استاد"
               tag="article"
-              style="width: 30rem"
+              style="width: 30rem; height: 25rem"
               class="mb-2 card-shadow"
             >
               <b-card-body>
@@ -69,24 +88,43 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      items: [
-        { "نام استاد": "دکتر رهبان", "تعداد": "۳" },
-        { "نام استاد": "دکتر عیسی زاده", "تعداد": "۲" },
-        { "نام استاد": "دکتر معینی", "تعداد": "۳" },
-        { "نام استاد": "دکتر خرازی", "تعداد": "۴" },
-        { "نام استاد": "دکتر جعفری", "تعداد": "۴" },
-        { "نام استاد": "دکتر جهانگیر", "تعداد": "۳" },
-        { "نام استاد": "دکتر حسنی", "تعداد": "۶" },
-        { "نام استاد": "دکتر یابی", "تعداد": "۳" },
-        { "نام استاد": "دکتر راسنکی", "تعداد": "۳" },
-        { "نام استاد": "دکتر ضارب", "تعداد": "۳" },
-        { "نام استاد": "دکتر آبام", "تعداد": "۳" },
+      loading: true,
+      items: [],
+      fields: [
+        {
+          key: "نام استاد",
+          sortable: false,
+        },
+        {
+          key: "تعداد",
+          sortable: true,
+        },
       ],
-      fields: ["نام استاد", "تعداد"],
     };
+  },
+  created() {
+    this.getAddProfsReqsData();
+  },
+  methods: {
+    getAddProfsReqsData() {
+      axios
+        .get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/add_prof_reqs`)
+        .then((response) => {
+          console.log(response.data);
+          this.items = response.data;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
   },
 };
 </script>
@@ -105,13 +143,24 @@ export default {
 .card-title {
   color: #274c77;
 }
+.prof-table {
+  border-radius: 15px;
+  margin-top: 35px;
+}
 .table {
-  background-color: #e7ecef;
+  background-color: white;
   color: #274c77 !important;
   border-color: #274c77;
+  border-radius: 15px;
 }
 th {
   background-color: #274c77 !important;
   color: white !important;
+}
+.b-table-busy-slot td {
+  border-style: hidden;
+}
+.loader-circle {
+  margin-top: 25%;
 }
 </style>

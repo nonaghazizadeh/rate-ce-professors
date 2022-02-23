@@ -10,7 +10,7 @@
         <b-navbar-nav class="mr-auto">
           <b-nav-form>
             <b-button size="sm" class="m-2 my-sm-0 px-3 navbar-btn"
-              ><router-link :to="{ path: '/register' }"
+              ><router-link :to="{ path: '/register' }" replace
                 >خروج</router-link
               ></b-button
             >
@@ -18,33 +18,35 @@
         </b-navbar-nav>
       </b-navbar>
     </div>
-    <div class="container mt-5">
+    <loader v-if="loading" />
+    <div v-if="!loading" class="container mt-5">
       <div class="row mt-3">
         <div class="col-4 info-part">
           <b-card
             title="اطلاعات کاربری"
             tag="article"
-            style="width: 20rem"
+            style="width: 20rem; height:15rem"
             class="mb-2 card-shadow"
           >
             <b-card-body>
               <div class="card-body text-center user-card-body">
                 <p class="text-right">
                   <span>نام کاربری: </span>
-                  <span class="info-content">نونا قاضی زاده </span>
+                  <span class="info-content">{{ username }}</span>
                 </p>
                 <p class="text-right">
                   <span>شماره دانشجویی: </span>
-                  <span class="info-content">۹۸۱۷۱۰۰۷</span>
+                  <span class="info-content">{{ stid }}</span>
                 </p>
                 <p class="text-right">
                   <span>وضعیت احراز هویت: </span
-                  ><span class="info-content"> تایید نشده </span>
+                  ><span class="info-content"> {{ authStatus }}</span>
                 </p>
               </div>
             </b-card-body>
           </b-card>
           <b-card
+            v-if="retryAuth"
             title="احراز هویت مجدد"
             tag="article"
             style="width: 20rem"
@@ -79,7 +81,7 @@
           <b-card
             title="ثبت درخواست افزودن استاد"
             tag="article"
-            style="width: 40rem"
+            style="width: 40rem; height: 15rem"
             class="mb-2 card-shadow"
           >
             <b-card-body>
@@ -105,8 +107,53 @@
 </template>
 
 <script>
+import axios from "axios";
+import Loader from "./Loader.vue";
+
 export default {
-  components: {},
+  components: {
+    Loader,
+  },
+  data() {
+    return {
+      loading: true,
+      username: "",
+      stid: "",
+      authStatus: "",
+      retryAuth: false,
+    };
+  },
+  created() {
+    this.getUserData();
+  },
+  methods: {
+    getUserData() {
+      axios
+        .get(
+          `https://617534a508834f0017c70b5c.mockapi.io/api/v1/users/` +
+            this.$route.params.id
+        )
+        .then((response) => {
+          this.username =
+            response.data.firstname + " " + response.data.lastname;
+          this.stid = response.data.student_number;
+          if (response.data.auth_status === "reject") {
+            this.authStatus = "رد شده";
+            this.retryAuth = true;
+          } else if (response.data.auth_status === "accept") {
+            this.authStatus = "تایید شده";
+          } else {
+            this.authStatus = "در حال بررسی";
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+  },
 };
 </script>
 
