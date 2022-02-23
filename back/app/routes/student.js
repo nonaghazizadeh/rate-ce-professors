@@ -1,5 +1,5 @@
 import express from 'express';
-import { create, get_pendings, change_status, login } from '../controllers/student.js';
+import { create, get_pendings, change_status, login, find_one } from '../controllers/student.js';
 
 const router = express.Router();
 
@@ -16,6 +16,9 @@ function set_student_router(app) {
 
     // login student
     router.get('/login', login);
+
+    // retrieve student data
+    router.get('/', find_one);
 
     app.use('/students', router);
 };

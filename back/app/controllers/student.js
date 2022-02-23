@@ -81,21 +81,20 @@ function change_status(req, res) {
 };
 
 async function login(req, res) {
-    const { student_number, code_meli } = req.body;
+    const { student_number, code_meli } = req.query;
     if ([student_number, code_meli].includes(undefined)) {
         res.status(400).send({
             message: "provide all parameters."
         });
         return;
     };
-
     const stu = await Students.findOne({
         where: {
             student_number: student_number,
             code_meli: code_meli
         }
     });
-    if (!stu) {
+    if (stu) {
         res.send({
             id: stu.id
         });
@@ -106,4 +105,29 @@ async function login(req, res) {
     };
 };
 
-export { create, get_pendings, change_status, login };
+async function find_one(req, res) {
+    const { id } = req.query;
+    if ([id].includes(undefined)) {
+        res.status(400).send({
+            message: "provide all parameters."
+        });
+        return;
+    };
+    Students.findByPk(id)
+    .then(data => {
+        if (data) {
+            res.send(data);
+        } else {
+            res.status(400).send({
+                message: `Cannot find student with id=${id}`
+            });
+        };
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: `Error finding student with id=${id}`
+        });
+    });
+};
+
+export { create, get_pendings, change_status, login, find_one };
