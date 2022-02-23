@@ -46,8 +46,9 @@
                   >
                   <b-form-input
                     id="inline-form-input-name"
-                    class="mb-2 mr-sm-2 mb-sm-0"
+                    class="mb-2 mb-sm-0"
                     placeholder="نام استاد"
+                    v-model="profName"
                   ></b-form-input>
 
                   <label class="sr-only" for="inline-form-input-image"
@@ -55,8 +56,9 @@
                   >
                   <b-form-input
                     id="inline-form-input-image"
-                    class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                    class="mb-2 mb-sm-0 mt-3"
                     placeholder="آدرس عکس استاد"
+                    v-model="profImageUrl"
                   ></b-form-input>
 
                   <label class="sr-only" for="inline-form-input-email"
@@ -65,16 +67,18 @@
                   <b-form-input
                     id="inline-form-input-email"
                     type="email"
-                    class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                    class="mb-2 mb-sm-0 mt-3"
                     placeholder="آدرس ایمیل استاد"
+                    v-model="profEmail"
                   ></b-form-input>
                   <b-form-textarea
                     id="textarea-default"
                     placeholder="توضیحات"
                     class="mt-3"
+                    v-model="profInfo"
                   ></b-form-textarea>
 
-                  <b-button class="mt-3 add-prof-btn" type="submit"
+                  <b-button class="mt-3 add-prof-btn" @click="addNewProfessor()"
                     >ثبت استاد</b-button
                   >
                 </b-form>
@@ -105,6 +109,11 @@ export default {
           sortable: true,
         },
       ],
+      profName: "",
+      profImageUrl: "",
+      profEmail: "",
+      profInfo: "",
+      toastCount: 0,
     };
   },
   created() {
@@ -125,6 +134,38 @@ export default {
           this.loading = false;
         });
     },
+    addNewProfessor() {
+      const data = {
+        name: this.profName,
+        image_url: this.profImageUrl,
+        email: this.profEmail,
+        info: this.profInfo,
+      };
+      axios
+        .post("https://617534a508834f0017c70b5c.mockapi.io/api/v1/new/", data)
+        .then(() => {
+          this.makeSuccessToast()
+        }).catch((e) => {
+          console.error(e)
+          this.makeFailToast()
+        })
+    },
+    makeSuccessToast() {
+      this.$bvToast.toast('افزودن استاد با موفقیت انجام شد.', {
+        autoHideDelay: 5000,
+        toaster: 'b-toaster-bottom-left',
+        noCloseButton: true,
+        bodyClass: 'right-text'
+      });
+    },
+    makeFailToast() {
+      this.$bvToast.toast('افزودن استاد ناموفق بود.', {
+        autoHideDelay: 5000,
+        toaster: 'b-toaster-bottom-left',
+        noCloseButton: true,
+        bodyClass: 'right-text'
+      });
+    }
   },
 };
 </script>
@@ -162,5 +203,12 @@ th {
 }
 .loader-circle {
   margin-top: 25%;
+}
+.right-text {
+  text-align: right;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
 }
 </style>
