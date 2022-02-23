@@ -9,7 +9,7 @@ function set_comment_router(app) {
     router.post('/new', create);
 
     // update comment
-    router.post('/update', update);
+    router.put('/update', update);
 
     // delete comment
     router.delete('/', delete_one)

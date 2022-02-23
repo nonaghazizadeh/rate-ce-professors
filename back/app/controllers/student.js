@@ -48,7 +48,7 @@ function get_pendings(req, res) {
 }
 
 function change_status(req, res) {
-    const { id, accept } = req.body;
+    const { id, accept } = req.query;
     if ([id, accept].includes(undefined)) {
         res.status(400).send({
             message: "provide all parameters."

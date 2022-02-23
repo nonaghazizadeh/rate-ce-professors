@@ -26,7 +26,7 @@ function create(req, res) {
 };
 
 function update(req, res) {
-    const { id, content } = req.body;
+    const { id, content } = req.query;
     if ([id, content].includes(undefined)) {
         res.status(400).send({
             message: "provide all parameters."

@@ -12,7 +12,7 @@ function set_student_router(app) {
     router.get('/pendings', get_pendings);
 
     // accept or reject student
-    router.post('/accept', change_status);
+    router.put('/accept', change_status);
 
     // login student
     router.get('/login', login);
