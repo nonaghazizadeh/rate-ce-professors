@@ -26,7 +26,56 @@ function create(req, res) {
 };
 
 function update(req, res) {
-    
+    const { id, content } = req.body;
+    if ([id, content].includes(undefined)) {
+        res.status(400).send({
+            message: "provide all parameters."
+        });
+        return;
+    };
+
+    Commets.update({
+        content: content
+    }, {
+        where: {id: id}
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: 'Comment changed successfully.'
+            });
+        };
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Error changing comment with id: " + id
+          });
+    });
 };
 
-export { create };
+function delete_one(req, res) {
+    const { id } = req.query;
+    if ([id].includes(undefined)) {
+        res.status(400).send({
+            message: "provide all parameters."
+        });
+        return;
+    };
+
+    Commets.destroy({
+        where: {id: id}
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Successfully deleted comment with id: " + id
+            });
+        };
+    }).catch(err => {
+        res.status(500).send({
+            message: "Error deleting comment with id: " + id
+          });
+    });
+}
+
+export { create, update, delete_one };
