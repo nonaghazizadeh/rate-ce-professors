@@ -7,26 +7,36 @@ function create_student_model(sequelize, Sequelize) {
         },
         firstname: {
             type: Sequelize.STRING,
-            notNull: true,
-            notEmpty: true,
+            validate: {
+                notNull: true,
+                notEmpty: true,
+            }
         },
         lastname: {
             type: Sequelize.STRING,
-            notNull: true,
-            notEmpty: true,
+            validate: {
+                notNull: true,
+                notEmpty: true,
+            }
         },
         student_number: {
             type: Sequelize.STRING,
-            notNull: true
+            validate: {
+                notNull: true,
+            }
         },
         code_meli: {
             type: Sequelize.STRING,
-            notNull: true
+            validate: {
+                notNull: true,
+            }
         },
         status: {
             type: Sequelize.STRING,
             defaultValue: "pending",
-            isIn: [['pending', 'accept', 'reject']] 
+            validate: {
+                isIn: [['pending', 'accept', 'reject']] 
+            }
         }
     }, {
         timestamps: false

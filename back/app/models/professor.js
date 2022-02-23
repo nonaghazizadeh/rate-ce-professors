@@ -7,21 +7,59 @@ function create_professor_model(sequelize, Sequelize) {
         },
         name: {
             type: Sequelize.STRING,
-            notNull: true,
-            notEmpty: true,
-            unique: true
+            unique: true,
+            validate: {
+                notNull: true,
+                notEmpty: true,
+            }
         },
         email: {
             type: Sequelize.STRING,
             unique: true,
-            isEmail: true
+            validate: {
+                isEmail: true
+            }
         },
         image_url: {
             type: Sequelize.STRING,
-            isUrl: true,
-            unique: true
+            unique: true,
+            validate: {
+                isUrl: true,
+            }
         },
-        info: Sequelize.TEXT
+        info: Sequelize.TEXT,
+        ethic: {
+            type: Sequelize.INTEGER,
+            defaultValue: 50,
+            validate: {
+                min: 0,
+                max: 100
+            }
+        },
+        teaching: {
+            type: Sequelize.INTEGER,
+            defaultValue: 50,
+            validate: {
+                min: 0,
+                max: 100
+            }
+        },
+        grading: {
+            type: Sequelize.INTEGER,
+            defaultValue: 50,
+            validate: {
+                min: 0,
+                max: 100
+            }
+        },
+        managemet: {
+            type: Sequelize.INTEGER,
+            defaultValue: 50,
+            validate: {
+                min: 0,
+                max: 100
+            }
+        }
     }, {
         timestamps: false
     });

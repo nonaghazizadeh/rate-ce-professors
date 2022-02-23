@@ -7,13 +7,17 @@ function create_admin_model(sequelize, Sequelize) {
         },
         username: {
             type: Sequelize.STRING,
-            notNull: true,
-            notEmpty: true,
+            validate: {
+                notNull: true,
+                notEmpty: true,
+            }
         },
         password: {
             type: Sequelize.STRING,
-            notNull: true,
-            notEmpty: true,
+            validate: {
+                notNull: true,
+                notEmpty: true,
+            }
         }
     }, {
         timestamps: false
