@@ -3,12 +3,12 @@ import { create } from '../controllers/professor.js';
 
 const router = express.Router();
 
-function set_admin_router(app) {
+function set_professor_router(app) {
 
-    // create new note
+    // create new professor
     router.post('/new', create);
 
     app.use('/professors', router);
 };
 
-export default set_admin_router;
+export default set_professor_router;

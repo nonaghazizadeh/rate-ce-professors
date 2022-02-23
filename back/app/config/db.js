@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-console.log(__dirname)
 dotenv.config({path: resolve(__dirname, '../../.env')});
 
 export const HOST = process.env.DB_HOST;

@@ -6,7 +6,8 @@ import bodyParser from "body-parser";
 import cors from 'cors';
 
 import db from './app/models/index.js'
-import set_admin_router from './app/routes/professor.js'
+import set_professor_router from './app/routes/professor.js'
+import set_student_router from "./app/routes/student.js";
 
 var corsOptions = {
     origin: "http://localhost:3000"
@@ -21,7 +22,8 @@ app.use(bodyParser.json());
 
 db.sequelize.sync();
 
-set_admin_router(app);
+set_professor_router(app);
+set_student_router(app);
 
 const PORT = process.env.BACKEND_PORT;
 app.listen(PORT, () => {
