@@ -1,7 +1,8 @@
-import { DB, USER, PASSWORD, HOST, dialect as _dialect } from '../config/db.js';
 import Sequelize from 'sequelize';
 
-console.log(DB)
+import { DB, USER, PASSWORD, HOST, dialect as _dialect } from '../config/db.js';
+import create_professor_model from './professor.js';
+
 const sequelize = new Sequelize(
     DB,
     USER,
@@ -16,5 +17,7 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
+db.professors = create_professor_model(sequelize, Sequelize);
 
 export default db;

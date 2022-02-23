@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import cors from 'cors';
 
 import db from './app/models/index.js'
+import set_admin_router from './app/routes/professor.js'
 
 var corsOptions = {
     origin: "http://localhost:3000"
@@ -19,16 +20,10 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 db.sequelize.sync();
-db.sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+
+set_admin_router(app);
 
 const PORT = process.env.BACKEND_PORT;
-console.log(PORT)
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
