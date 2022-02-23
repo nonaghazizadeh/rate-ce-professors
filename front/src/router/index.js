@@ -32,9 +32,10 @@ const routes = [
     props: true,
   },
   {
-    path: "/user",
+    path: "/user/:id",
     name: "user",
     component: () => import("../views/User.vue"),
+    props: true,
   },
 ];
 
