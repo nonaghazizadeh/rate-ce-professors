@@ -7,29 +7,25 @@ function create_student_model(sequelize, Sequelize) {
         },
         firstname: {
             type: Sequelize.STRING,
+            notNull: true,
             validate: {
-                allowNull: true,
                 notEmpty: true,
             }
         },
         lastname: {
             type: Sequelize.STRING,
+            notNull: true,
             validate: {
-                allowNull: true,
                 notEmpty: true,
             }
         },
         student_number: {
             type: Sequelize.STRING,
-            validate: {
-                allowNull: true,
-            }
+            notNull: true,
         },
         code_meli: {
             type: Sequelize.STRING,
-            validate: {
-                allowNull: true,
-            }
+            notNull: true,
         },
         status: {
             type: Sequelize.STRING,

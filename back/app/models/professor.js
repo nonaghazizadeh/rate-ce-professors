@@ -8,8 +8,8 @@ function create_professor_model(sequelize, Sequelize) {
         name: {
             type: Sequelize.STRING,
             unique: true,
+            notNull: true,
             validate: {
-                allowNull: true,
                 notEmpty: true,
             }
         },
@@ -59,6 +59,10 @@ function create_professor_model(sequelize, Sequelize) {
                 min: 0,
                 max: 100
             }
+        },
+        rate_num: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
         }
     }, {
         timestamps: false
