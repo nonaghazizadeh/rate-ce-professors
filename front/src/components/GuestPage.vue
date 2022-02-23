@@ -241,8 +241,7 @@ a:hover {
 .navbar-color {
   background-color: #274c77 !important;
 }
-.professors-container,
-.loader {
+.professors-container {
   margin-top: 5rem !important;
 }
 a,
