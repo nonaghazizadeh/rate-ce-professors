@@ -10,7 +10,7 @@
     <div class="container h-100 register-container">
       <div class="d-flex justify-content-center">
         <b-card
-          title="ورود"
+          title="ورود کاربر"
           tag="article"
           style="width: 40rem"
           class="mb-2 card-shadow"
@@ -41,7 +41,7 @@
                   >ثبت‌نام</router-link
                 >
               </p>
-              <b-button class="mt-3 signin-btn" type="submit">ثبت نام</b-button>
+              <b-button class="mt-3 signin-btn" type="submit">ورود</b-button>
             </b-form>
           </b-card-body>
         </b-card>
