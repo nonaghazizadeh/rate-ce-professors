@@ -52,7 +52,7 @@ function create_professor_model(sequelize, Sequelize) {
                 max: 100
             }
         },
-        managemet: {
+        management: {
             type: Sequelize.INTEGER,
             defaultValue: 50,
             validate: {
