@@ -108,7 +108,7 @@ export default {
     },
   },
   created() {
-    this.$store.commit("setUserId", localStorage.getItem('id'));
+    // this.$store.commit("setUserId", localStorage.getItem('id'));
     this.getProfessorsData();
   },
   data() {

@@ -399,16 +399,17 @@ export default {
       }
     },
     createComment() {
-      let show_name = true;
+      console.log(this.content);
+      let show_name = false;
       console.log(this.status);
-      if ((this.status = "show")) {
-        show_name = false;
+      if (this.status === "show") {
+        show_name = true;
       }
       const data = {
-        prof_id: this.$route.params.id,
-        stu_id: this.$store.state.userId,
-        content: this.content,
-        show_name: show_name,
+        "prof_id": this.$route.params.id,
+        "stu_id": this.$store.state.userId,
+        "content": this.content,
+        "show_name": show_name,
       };
       axios
         .post("http://192.168.1.239:8080/comments/new", data)
@@ -440,12 +441,12 @@ export default {
     createRate() {
       this.loading = true;
       const data = {
-        prof_id: this.$route.params.id,
-        stu_id: this.$store.state.userId,
-        ethic: this.ethic_value,
-        teaching: this.teaching_value,
-        grading: this.grading_value,
-        management: this.management_value,
+        "prof_id": this.$route.params.id,
+        "stu_id": this.$store.state.userId,
+        "ethic": this.ethic_value,
+        "teaching": this.teaching_value,
+        "grading": this.grading_value,
+        "management": this.management_value,
       };
       return axios
         .post("http://192.168.1.239:8080/professors/rate", data)
@@ -460,12 +461,14 @@ export default {
           this.management_avg = response.data.management_avg;
           this.editableComments = response.data.editable_comments;
           this.nonEditableComments = response.data.non_editable_comments;
-          this.status = "no_show";
-          this.content = "";
-          this.ethic_value = 0;
-          this.grading_value = 0;
-          this.management_value = 0;
-          this.teaching_avg = 0;
+          if (this.content === "") {
+            this.status = "no_show";
+            this.content = "";
+            this.ethic_value = 0;
+            this.grading_value = 0;
+            this.management_value = 0;
+            this.teaching_avg = 0;
+          }
         })
         .catch((e) => {
           console.error(e);

@@ -74,7 +74,7 @@ export default {
         .then((response) => {
           console.log(response.data.id);
           this.$store.commit("setUserId", response.data.id);
-          localStorage.setItem('id',this.$store.state.userId)
+          // localStorage.setItem('id',this.$store.state.userId)
           this.$router.replace("/");
         })
         .catch((e) => {

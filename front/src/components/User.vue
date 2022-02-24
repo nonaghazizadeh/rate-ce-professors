@@ -119,8 +119,9 @@ export default {
       const data = { name: this.profName };
       axios
         .post("http://192.168.1.239:8080/requests/new", data)
-        .then((response) => {
+        .then(() => {
           this.makeSuccessToast();
+          this.profName = ""
         })
         .catch((e) => {
           console.error(e.response.data.message);
