@@ -36,91 +36,91 @@
                   </p>
                   <h4 class="card-title">{{ name }}</h4>
                   <p>{{ email }}</p>
-                  <p class="mt-5 gray-text" >{{ info }}</p>
+                  <p class="mt-5 gray-text">{{ info }}</p>
                 </div>
               </div>
             </div>
             <div class="card avg-rate-card">
-            <div class="row">
-              <div
-                class="my-3 col-2 progress fourth"
-                :style="[
-                  management_avg < 50
-                    ? {
-                        '--fg': '#bb435d',
-                        '--bg': '#e9ecef',
-                        '--value': management_avg,
-                      }
-                    : {
-                        '--fg': '#136f63',
-                        '--bg': '#e9ecef',
-                        '--value': management_avg,
-                      },
-                ]"
-                role="progressbar"
-                aria-valuemin="0"
-                :aria-valuenow="management_avg"
-                aria-valuemax="100"
-              ></div>
-              <div
-                class="my-3 col-2 progress third"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                :style="[
-                  grading_avg < 50
-                    ? {
-                        '--fg': '#bb435d',
-                        '--bg': '#e9ecef',
-                        '--value': grading_avg,
-                      }
-                    : {
-                        '--fg': '#136f63',
-                        '--bg': '#e9ecef',
-                        '--value': grading_avg,
-                      },
-                ]"
-              ></div>
-              <div
-                class="mt-3 col-2 progress second"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                :style="[
-                  teaching_avg < 50
-                    ? {
-                        '--fg': '#bb435d',
-                        '--bg': '#e9ecef',
-                        '--value': teaching_avg,
-                      }
-                    : {
-                        '--fg': '#136f63',
-                        '--bg': '#e9ecef',
-                        '--value': teaching_avg,
-                      },
-                ]"
-              ></div>
-              <div
-                class="mt-3 col-2 progress first"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="5"
-                :style="[
-                  ethic_avg < 50
-                    ? {
-                        '--fg': '#bb435d',
-                        '--bg': '#e9ecef',
-                        '--value': ethic_avg,
-                      }
-                    : {
-                        '--fg': '#136f63',
-                        '--bg': '#e9ecef',
-                        '--value': ethic_avg,
-                      },
-                ]"
-              ></div>
+              <div class="row">
+                <div
+                  class="my-3 col-2 progress fourth"
+                  :style="[
+                    management_avg < 50
+                      ? {
+                          '--fg': '#bb435d',
+                          '--bg': '#e9ecef',
+                          '--value': management_avg,
+                        }
+                      : {
+                          '--fg': '#136f63',
+                          '--bg': '#e9ecef',
+                          '--value': management_avg,
+                        },
+                  ]"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  :aria-valuenow="management_avg"
+                  aria-valuemax="100"
+                ></div>
+                <div
+                  class="my-3 col-2 progress third"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  :style="[
+                    grading_avg < 50
+                      ? {
+                          '--fg': '#bb435d',
+                          '--bg': '#e9ecef',
+                          '--value': grading_avg,
+                        }
+                      : {
+                          '--fg': '#136f63',
+                          '--bg': '#e9ecef',
+                          '--value': grading_avg,
+                        },
+                  ]"
+                ></div>
+                <div
+                  class="mt-3 col-2 progress second"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  :style="[
+                    teaching_avg < 50
+                      ? {
+                          '--fg': '#bb435d',
+                          '--bg': '#e9ecef',
+                          '--value': teaching_avg,
+                        }
+                      : {
+                          '--fg': '#136f63',
+                          '--bg': '#e9ecef',
+                          '--value': teaching_avg,
+                        },
+                  ]"
+                ></div>
+                <div
+                  class="mt-3 col-2 progress first"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="5"
+                  :style="[
+                    ethic_avg < 50
+                      ? {
+                          '--fg': '#bb435d',
+                          '--bg': '#e9ecef',
+                          '--value': ethic_avg,
+                        }
+                      : {
+                          '--fg': '#136f63',
+                          '--bg': '#e9ecef',
+                          '--value': ethic_avg,
+                        },
+                  ]"
+                ></div>
+              </div>
             </div>
-          </div>
           </div>
         </div>
         <div class="col-9">
@@ -135,11 +135,11 @@
                   <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
                     <div class="g-mb-15">
                       <h5 class="h5 g-color-gray-dark-v1 mb-0 comment-name">
-                        {{ editable.author }}
+                        {{ editable.show_name ? editable.author : `نا شناس` }}
                       </h5>
                     </div>
                     <p>
-                      {{ editable.comment }}
+                      {{ editable.content }}
                     </p>
                     <span>
                       <i
@@ -158,7 +158,7 @@
 
                       <template #default>
                         <textarea
-                          v-model="editable.comment"
+                          v-model="editable.content"
                           cols="30"
                           rows="7"
                           class="form-control comment-text-area"
@@ -170,7 +170,7 @@
                         <b-button
                           size="sm"
                           class="edit-modal-btn"
-                          @click="edit()"
+                          @click="editComment(editable.id, editable.content)"
                         >
                           ویرایش
                         </b-button>
@@ -185,6 +185,7 @@
                     </b-modal>
                     <span>
                       <i
+                        @click="deleteComment(editable.id)"
                         class="far fa-trash-alt trash-icon pointer comment-icon"
                       ></i>
                     </span>
@@ -200,11 +201,15 @@
                   <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
                     <div class="g-mb-15">
                       <h5 class="h5 g-color-gray-dark-v1 mb-0 comment-name">
-                        {{ noneEditable.author }}
+                        {{
+                          noneEditable.show_name
+                            ? noneEditable.author
+                            : `نا شناس`
+                        }}
                       </h5>
                     </div>
                     <p>
-                      {{ noneEditable.comment }}
+                      {{ noneEditable.content }}
                     </p>
                   </div>
                 </div>
@@ -254,6 +259,7 @@
                       rows="7"
                       class="form-control comment-text-area mt-3"
                       placeholder="نظر خود را بنویسید ..."
+                      v-model="content"
                     ></textarea>
                     <div class="comment-check-box mt-2">
                       <b-form-checkbox
@@ -269,7 +275,12 @@
                   </div>
 
                   <div class="form-group mt-3">
-                    <button type="button" id="post" class="btn add-comment-btn">
+                    <button
+                      type="button"
+                      id="post"
+                      class="btn add-comment-btn"
+                      @click="addView()"
+                    >
                       ثبت
                     </button>
                   </div>
@@ -310,6 +321,7 @@ export default {
       teaching_avg: 0,
       grading_avg: 0,
       management_avg: 0,
+      content: "",
     };
   },
   methods: {
@@ -318,37 +330,20 @@ export default {
     },
     getInitialData() {
       if (this.$store.state.userId !== "") {
-        this.getProfessorData().then(() => {
-          this.getUserAuthStatus();
-        });
+        this.auth_status = true;
+        this.getProfessorDataVerified();
       } else {
-        this.getProfessorData();
+        this.getProfessorDataNonVerified();
       }
     },
-    getUserAuthStatus() {
+    getProfessorDataVerified() {
       axios
-        .get(
-          `https://617534a508834f0017c70b5c.mockapi.io/api/v1/users/` +
-            this.$store.state.userId
-        )
-        .then((response) => {
-          if (response.data.auth_status === "accept") {
-            this.auth_status = true;
-          }
+        .get(`http://192.168.1.239:8080/professors/one`, {
+          params: {
+            prof_id: this.$route.params.id,
+            stu_id: this.$store.state.userId,
+          },
         })
-        .catch((e) => {
-          console.error(e);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    getProfessorData() {
-      return axios
-        .get(
-          `https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs/` +
-            this.$route.params.id
-        )
         .then((response) => {
           this.image_url = response.data.image_url;
           this.name = response.data.name;
@@ -365,12 +360,179 @@ export default {
           console.error(e);
         })
         .finally(() => {
-          if (this.$store.state.userId === "") {
+          this.loading = false;
+        });
+    },
+    getProfessorDataNonVerified() {
+      axios
+        .get(`http://192.168.1.239:8080/professors/one`, {
+          params: {
+            prof_id: this.$route.params.id,
+          },
+        })
+        .then((response) => {
+          this.image_url = response.data.image_url;
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.info = response.data.info;
+          this.ethic_avg = response.data.ethic_avg;
+          this.teaching_avg = response.data.teaching_avg;
+          this.grading_avg = response.data.grading_avg;
+          this.management_avg = response.data.management_avg;
+          this.editableComments = response.data.editable_comments;
+          this.nonEditableComments = response.data.non_editable_comments;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    addView() {
+      if (this.content === "") {
+        this.createRate();
+      } else {
+        this.createRate().then(() => {
+          this.createComment();
+        });
+      }
+    },
+    createComment() {
+      let show_name = true;
+      console.log(this.status);
+      if ((this.status = "show")) {
+        show_name = false;
+      }
+      const data = {
+        prof_id: this.$route.params.id,
+        stu_id: this.$store.state.userId,
+        content: this.content,
+        show_name: show_name,
+      };
+      axios
+        .post("http://192.168.1.239:8080/comments/new", data)
+        .then((response) => {
+          this.image_url = response.data.image_url;
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.info = response.data.info;
+          this.ethic_avg = response.data.ethic_avg;
+          this.teaching_avg = response.data.teaching_avg;
+          this.grading_avg = response.data.grading_avg;
+          this.management_avg = response.data.management_avg;
+          this.editableComments = response.data.editable_comments;
+          this.nonEditableComments = response.data.non_editable_comments;
+          this.status = "no_show";
+          this.content = "";
+          this.ethic_value = 0;
+          this.grading_value = 0;
+          this.management_value = 0;
+          this.teaching_avg = 0;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    createRate() {
+      this.loading = true;
+      const data = {
+        prof_id: this.$route.params.id,
+        stu_id: this.$store.state.userId,
+        ethic: this.ethic_value,
+        teaching: this.teaching_value,
+        grading: this.grading_value,
+        management: this.management_value,
+      };
+      return axios
+        .post("http://192.168.1.239:8080/professors/rate", data)
+        .then((response) => {
+          this.image_url = response.data.image_url;
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.info = response.data.info;
+          this.ethic_avg = response.data.ethic_avg;
+          this.teaching_avg = response.data.teaching_avg;
+          this.grading_avg = response.data.grading_avg;
+          this.management_avg = response.data.management_avg;
+          this.editableComments = response.data.editable_comments;
+          this.nonEditableComments = response.data.non_editable_comments;
+          this.status = "no_show";
+          this.content = "";
+          this.ethic_value = 0;
+          this.grading_value = 0;
+          this.management_value = 0;
+          this.teaching_avg = 0;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          if (this.content === "") {
             this.loading = false;
           }
         });
     },
+    deleteComment(id) {
+      this.loading = true;
+      axios
+        .delete("http://192.168.1.239:8080/comments", {
+          params: {
+            id: id,
+          },
+        })
+        .then((response) => {
+          this.image_url = response.data.image_url;
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.info = response.data.info;
+          this.ethic_avg = response.data.ethic_avg;
+          this.teaching_avg = response.data.teaching_avg;
+          this.grading_avg = response.data.grading_avg;
+          this.management_avg = response.data.management_avg;
+          this.editableComments = response.data.editable_comments;
+          this.nonEditableComments = response.data.non_editable_comments;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    editComment(id, content) {
+      this.loading = true;
+      const data = {
+        id: id,
+        content: content,
+      };
+      axios
+        .put("http://192.168.1.239:8080/comments/update", data)
+        .then((response) => {
+          this.$bvModal.hide("modal" + id);
+          this.image_url = response.data.image_url;
+          this.name = response.data.name;
+          this.email = response.data.email;
+          this.info = response.data.info;
+          this.ethic_avg = response.data.ethic_avg;
+          this.teaching_avg = response.data.teaching_avg;
+          this.grading_avg = response.data.grading_avg;
+          this.management_avg = response.data.management_avg;
+          this.editableComments = response.data.editable_comments;
+          this.nonEditableComments = response.data.non_editable_comments;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
   },
+
   created() {
     this.getInitialData();
   },
@@ -378,7 +540,7 @@ export default {
 </script>
 
 <style>
-.frontside-prof .card .card-title{
+.frontside-prof .card .card-title {
   color: #274c77 !important;
 }
 
@@ -391,7 +553,7 @@ export default {
   min-height: 450px;
   width: 270px;
 }
-.avg-rate-card{
+.avg-rate-card {
   margin-top: 20px;
   min-height: 80px;
   width: 270px;
@@ -504,8 +666,8 @@ body {
 .navbar-color {
   background-color: #274c77 !important;
 }
-a,
-a:hover {
+.navbar-btn a,
+.navbar-btn a:hover {
   color: #274c77;
   text-decoration: none;
 }
@@ -601,6 +763,6 @@ label {
   border-color: #ced4da;
 }
 .gray-text {
-  color: #8b8c89
+  color: #8b8c89;
 }
 </style>

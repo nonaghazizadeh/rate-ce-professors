@@ -24,6 +24,7 @@
                 id="inline-form-input-stid"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 login-form"
                 placeholder="شماره دانشجویی"
+                v-model="student_number"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-code">کد ملی</label>
@@ -31,8 +32,11 @@
                 id="inline-form-input-code"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 login-form"
                 placeholder="کد ملی"
+                v-model="code_meli"
               ></b-form-input>
-              <b-button class="mt-3 signin-btn btn-shadow" type="submit">ورود</b-button>
+              <b-button class="mt-3 signin-btn btn-shadow" @click="loginUser()"
+                >ورود</b-button
+              >
               <p class="check-text mt-3">
                 <router-link
                   class="route-text"
@@ -50,10 +54,47 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      student_number: "",
+      code_meli: "",
+    };
+  },
+  methods: {
+    loginUser() {
+      axios
+        .get("http://192.168.1.239:8080/students/login", {
+          params: {
+            student_number: this.student_number,
+            code_meli: this.code_meli,
+          },
+        })
+        .then((response) => {
+          console.log(response.data.id);
+          this.$store.commit("setUserId", response.data.id);
+          localStorage.setItem('id',this.$store.state.userId)
+          this.$router.replace("/");
+        })
+        .catch((e) => {
+          this.$bvToast.toast(e.response.data.message, {
+            autoHideDelay: 5000,
+            toaster: "b-toaster-bottom-left",
+            noCloseButton: true,
+            bodyClass: "right-text",
+          });
+          console.error(e.response.data.message);
+        });
+    },
+  },
+};
 </script>
 
-<style scoped>
+<style>
+.right-text {
+  text-align: right !important;
+}
 .login-container {
   padding-top: 13%;
   margin-top: auto;

@@ -9,7 +9,10 @@
         </b-navbar-brand>
         <b-navbar-nav class="mr-auto">
           <b-nav-form>
-            <b-button size="sm" class="m-2 my-sm-0 px-3 navbar-btn"
+            <b-button
+              size="sm"
+              class="m-2 my-sm-0 px-3 navbar-btn"
+              @click="exit()"
               ><router-link :to="{ path: '/register' }" replace
                 >خروج</router-link
               ></b-button
@@ -25,7 +28,7 @@
           <b-card
             title="اطلاعات کاربری"
             tag="article"
-            style="width: 20rem; height:15rem"
+            style="width: 20rem; height: 15rem"
             class="mb-2 card-shadow user-card"
           >
             <b-card-body>
@@ -37,10 +40,6 @@
                 <p class="text-right">
                   <span>شماره دانشجویی: </span>
                   <span class="info-content">{{ stid }}</span>
-                </p>
-                <p class="text-right">
-                  <span>وضعیت احراز هویت: </span
-                  ><span class="info-content"> {{ authStatus }}</span>
                 </p>
               </div>
             </b-card-body>
@@ -63,6 +62,7 @@
                   id="inline-form-input-pname"
                   class="mb-2 mr-sm-2 mb-sm-0 mt-3 req-form"
                   placeholder="نام استاد"
+                  v-model="profName"
                 ></b-form-input>
                 <b-button class="mt-4 req-btn" @click="addProfessorRequest()"
                   >ثبت درخواست</b-button
@@ -89,7 +89,7 @@ export default {
       loading: true,
       username: "",
       stid: "",
-      authStatus: "",
+      profName: "",
     };
   },
   created() {
@@ -98,21 +98,15 @@ export default {
   methods: {
     getUserData() {
       axios
-        .get(
-          `https://617534a508834f0017c70b5c.mockapi.io/api/v1/users/` +
-            this.$route.params.id
-        )
+        .get(`http://192.168.1.239:8080/students`, {
+          params: {
+            id: this.$route.params.id,
+          },
+        })
         .then((response) => {
           this.username =
             response.data.firstname + " " + response.data.lastname;
           this.stid = response.data.student_number;
-          if (response.data.auth_status === "reject") {
-            this.authStatus = "رد شده";
-          } else if (response.data.auth_status === "accept") {
-            this.authStatus = "تایید شده";
-          } else {
-            this.authStatus = "در حال بررسی";
-          }
         })
         .catch((e) => {
           console.error(e);
@@ -121,23 +115,38 @@ export default {
           this.loading = false;
         });
     },
-    addProfessorRequest() {},
+    addProfessorRequest() {
+      const data = { name: this.profName };
+      axios
+        .post("http://192.168.1.239:8080/requests/new", data)
+        .then((response) => {
+          this.makeSuccessToast();
+        })
+        .catch((e) => {
+          console.error(e.response.data.message);
+          this.makeFailToast(e.response.data.message);
+        });
+    },
     makeSuccessToast() {
-      this.$bvToast.toast('درخواست افزودن استاد با موفقیت ثبت شد.', {
+      this.$bvToast.toast("درخواست افزودن استاد با موفقیت ثبت شد", {
         autoHideDelay: 5000,
-        toaster: 'b-toaster-bottom-left',
+        toaster: "b-toaster-bottom-left",
         noCloseButton: true,
-        bodyClass: 'right-text'
+        bodyClass: "right-text",
       });
     },
-    makeFailToast() {
-      this.$bvToast.toast('ثبت درخواست افزودن استاد ناموفق بود.', {
+    makeFailToast(message) {
+      this.$bvToast.toast(message, {
         autoHideDelay: 5000,
-        toaster: 'b-toaster-bottom-left',
+        toaster: "b-toaster-bottom-left",
         noCloseButton: true,
-        bodyClass: 'right-text'
+        bodyClass: "right-text",
       });
-    }
+    },
+    exit() {
+      this.$store.commit("setUserId", '');
+      this.$router.replace("/register");
+    },
   },
 };
 </script>

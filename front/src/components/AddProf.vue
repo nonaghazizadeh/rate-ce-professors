@@ -78,7 +78,9 @@
                     v-model="profInfo"
                   ></b-form-textarea>
 
-                  <b-button class="mt-3 add-prof-btn btn-shadow" @click="addNewProfessor()"
+                  <b-button
+                    class="mt-3 add-prof-btn btn-shadow"
+                    @click="addNewProfessor()"
                     >ثبت استاد</b-button
                   >
                 </b-form>
@@ -122,7 +124,7 @@ export default {
   methods: {
     getAddProfsReqsData() {
       axios
-        .get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/add_prof_reqs`)
+        .get(`http://192.168.1.239:8080/requests`)
         .then((response) => {
           console.log(response.data);
           this.items = response.data;
@@ -135,6 +137,7 @@ export default {
         });
     },
     addNewProfessor() {
+      this.loading = true;
       const data = {
         name: this.profName,
         image_url: this.profImageUrl,
@@ -142,30 +145,37 @@ export default {
         info: this.profInfo,
       };
       axios
-        .post("https://617534a508834f0017c70b5c.mockapi.io/api/v1/new/", data)
+        .post("http://192.168.1.239:8080/professors/new", data)
         .then(() => {
-          this.makeSuccessToast()
-        }).catch((e) => {
-          console.error(e)
-          this.makeFailToast()
+          this.makeSuccessToast();
+          this.getAddProfsReqsData();
+          this.profName = "";
+          this.profImageUrl = "";
+          this.profEmail = "";
+          this.profInfo = "";
         })
+        .catch((e) => {
+          console.error(e);
+          this.loading = false;
+          this.makeFailToast();
+        });
     },
     makeSuccessToast() {
-      this.$bvToast.toast('افزودن استاد با موفقیت انجام شد.', {
+      this.$bvToast.toast("افزودن استاد با موفقیت انجام شد", {
         autoHideDelay: 5000,
-        toaster: 'b-toaster-bottom-left',
+        toaster: "b-toaster-bottom-left",
         noCloseButton: true,
-        bodyClass: 'right-text'
+        bodyClass: "right-text",
       });
     },
     makeFailToast() {
-      this.$bvToast.toast('افزودن استاد ناموفق بود.', {
+      this.$bvToast.toast("افزودن استاد ناموفق بود", {
         autoHideDelay: 5000,
-        toaster: 'b-toaster-bottom-left',
+        toaster: "b-toaster-bottom-left",
         noCloseButton: true,
-        bodyClass: 'right-text'
+        bodyClass: "right-text",
       });
-    }
+    },
   },
 };
 </script>

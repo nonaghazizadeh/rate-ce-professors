@@ -24,6 +24,7 @@
                 id="inline-form-input-name"
                 class="mb-2 mr-sm-2 mb-sm-0 register-form"
                 placeholder="نام"
+                v-model="firstname"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-lastname"
@@ -33,6 +34,7 @@
                 id="inline-form-input-lastname"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 register-form"
                 placeholder="نام خانوادگی"
+                v-model="lastname"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-stid"
@@ -42,6 +44,7 @@
                 id="inline-form-input-stid"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 register-form"
                 placeholder="شماره دانشجویی"
+                v-model="student_number"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-code">کد ملی</label>
@@ -49,8 +52,11 @@
                 id="inline-form-input-code"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 register-form"
                 placeholder="کد ملی"
+                v-model="code_meli"
               ></b-form-input>
-              <b-button class="mt-3 signup-btn btn-shadow" @click="registerUser()"
+              <b-button
+                class="mt-3 signup-btn btn-shadow"
+                @click="registerUser()"
                 >ثبت نام</b-button
               >
               <p class="check-text">
@@ -67,10 +73,30 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
+  data() {
+    return {
+      firstname: "",
+      lastname: "",
+      student_number: "",
+      code_meli: "",
+    };
+  },
   methods: {
     registerUser() {
-      this.$router.replace("/");
+      const data = {
+        firstname: this.firstname,
+        lastname: this.lastname,
+        student_number: this.student_number,
+        code_meli: this.code_meli,
+      };
+      axios
+        .post("http://192.168.1.239:8080/students/new", data)
+        .then(() => {
+          this.$router.replace("/");
+        });
     },
   },
 };

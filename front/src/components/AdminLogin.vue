@@ -24,15 +24,21 @@
                 id="inline-form-input-username"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 admin-form"
                 placeholder="نام کاربری"
+                v-model="username"
               ></b-form-input>
 
-              <label class="sr-only" for="inline-form-input-password">رمز عبور</label>
+              <label class="sr-only" for="inline-form-input-password"
+                >رمز عبور</label
+              >
               <b-form-input
                 id="inline-form-input-password"
                 class="mb-2 mr-sm-2 mb-sm-0 mt-3 admin-form"
                 placeholder="رمز عبور"
+                v-model="password"
               ></b-form-input>
-              <b-button class="mt-3 signin-btn btn-shadow">ورود</b-button>
+              <b-button class="mt-3 signin-btn btn-shadow" @click="loginAdmin()"
+                >ورود</b-button
+              >
             </b-form>
           </b-card-body>
         </b-card>
@@ -42,7 +48,32 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    loginAdmin() {
+      axios
+        .get("http://192.168.1.239:8080/admins/login", {
+          params: {
+            username: this.username,
+            password: this.password,
+          },
+        })
+        .then(() => {
+          this.$router.replace("/admin");
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -51,7 +82,7 @@ export default {};
   margin-top: auto;
   margin-bottom: auto;
 }
-.admin-card{
+.admin-card {
   border-radius: 20px;
 }
 .admin-card .card-body {

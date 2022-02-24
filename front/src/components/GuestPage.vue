@@ -108,6 +108,7 @@ export default {
     },
   },
   created() {
+    this.$store.commit("setUserId", localStorage.getItem('id'));
     this.getProfessorsData();
   },
   data() {
@@ -120,7 +121,7 @@ export default {
   methods: {
     getProfessorsData() {
       axios
-        .get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs`)
+        .get(`http://192.168.1.239:8080/professors/`)
         .then((response) => {
           this.professors = response.data;
         })
@@ -221,6 +222,9 @@ body {
   min-height: 312px;
   border-radius: 20px;
 }
+.backside .card{
+  width: 348px;
+}
 
 .backside .card a {
   font-size: 18px;
@@ -267,8 +271,8 @@ a:hover {
   margin-top: 2rem !important;
   padding-top: 30px;
 }
-a,
-a:hover {
+.navbar-btn a,
+.navbar-btn:hover {
   color: #274c77 !important;
   text-decoration: none !important;
 }

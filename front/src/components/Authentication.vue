@@ -2,7 +2,10 @@
   <div>
     <loader v-if="loading" />
     <div v-if="!loading" class="container mt-3">
-      <div>
+      <div v-if="authentications.length === 0">
+        درخواستی وجود ندارد.
+      </div>
+      <div v-if="authentications.length !== 0">
         <b-card
           bg-variant="light"
           class="card-shadow mb-3 auth-card"
@@ -16,11 +19,11 @@
             </div>
             <div class="card-btn col-8">
               <i
-                @click="rejectAuth()"
+                @click="rejectAuth(auth.id)"
                 class="fa-solid fa-xmark fa-2x pointer reject-auth-icon"
               ></i>
               <i
-                @click="acceptAuth()"
+                @click="acceptAuth(auth.id)"
                 class="fa-solid fa-check fa-2x pointer accept-auth-icon"
               ></i>
             </div>
@@ -48,33 +51,64 @@
 
 <script>
 import Loader from "./Loader.vue";
+import axios from "axios";
 export default {
   components: { Loader },
   name: "Authentication",
   data() {
     return {
-      loading: false,
-      authentications: [
-        {
-          id: 1,
-          firstname: "نونا",
-          lastname: "قاضی زاده",
-          student_number: "۹۸۱۷۱۰۰۷",
-          code_meli: "۰۴۴۰۹۷۹۶۵۱",
-        },
-        {
-          id: 2,
-          firstname: "شایان",
-          lastname: "محمدی زاده",
-          student_number: "۹۸۱۰۲۲۷۳",
-          code_meli: "۰۴۴۰۹۷۹۶۵۱",
-        },
-      ],
+      loading: true,
+      authentications: [],
     };
   },
+  created() {
+    this.getPendingStudents();
+  },
   methods: {
-    rejectAuth() {},
-    acceptAuth() {},
+    rejectAuth(id) {
+      this.loading = true;
+      const data = {
+        id: id,
+        accept: false,
+      };
+      axios
+        .put("http://192.168.1.239:8080/students/accept", data)
+        .then((response) => {
+          this.authentications = response.data;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    acceptAuth(id) {
+      this.loading = true;
+      const data = {
+        id: id,
+        accept: true,
+      };
+      axios
+        .put("http://192.168.1.239:8080/students/accept", data)
+        .then((response) => {
+          this.authentications = response.data;
+        })
+        .catch((e) => {
+          console.error(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    getPendingStudents() {
+      axios
+        .get("http://192.168.1.239:8080/students/pendings")
+        .then((response) => {
+          this.authentications = response.data;
+          this.loading = false;
+        });
+    },
   },
 };
 </script>
