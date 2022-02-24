@@ -28,30 +28,32 @@
       <div class="row mt-3">
         <div class="col-3 info-part">
           <div class="position-fixed">
-            <div class="frontside">
-              <div class="card">
+            <div class="frontside-prof">
+              <div class="card prof-card">
                 <div class="card-body text-center front-card-body">
                   <p>
                     <img class="img-fluid" :src="image_url" alt="card image" />
                   </p>
                   <h4 class="card-title">{{ name }}</h4>
                   <p>{{ email }}</p>
+                  <p class="mt-5 gray-text" >{{ info }}</p>
                 </div>
               </div>
             </div>
+            <div class="card avg-rate-card">
             <div class="row">
               <div
-                class="mt-3 col-2 progress fourth"
+                class="my-3 col-2 progress fourth"
                 :style="[
                   management_avg < 50
                     ? {
                         '--fg': '#bb435d',
-                        '--bg': '#f4e1e1',
+                        '--bg': '#e9ecef',
                         '--value': management_avg,
                       }
                     : {
-                        '--fg': '#274c77',
-                        '--bg': '#def',
+                        '--fg': '#136f63',
+                        '--bg': '#e9ecef',
                         '--value': management_avg,
                       },
                 ]"
@@ -61,7 +63,7 @@
                 aria-valuemax="100"
               ></div>
               <div
-                class="mt-3 col-2 progress third"
+                class="my-3 col-2 progress third"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
@@ -69,12 +71,12 @@
                   grading_avg < 50
                     ? {
                         '--fg': '#bb435d',
-                        '--bg': '#f4e1e1',
+                        '--bg': '#e9ecef',
                         '--value': grading_avg,
                       }
                     : {
-                        '--fg': '#274c77',
-                        '--bg': '#def',
+                        '--fg': '#136f63',
+                        '--bg': '#e9ecef',
                         '--value': grading_avg,
                       },
                 ]"
@@ -88,12 +90,12 @@
                   teaching_avg < 50
                     ? {
                         '--fg': '#bb435d',
-                        '--bg': '#f4e1e1',
+                        '--bg': '#e9ecef',
                         '--value': teaching_avg,
                       }
                     : {
-                        '--fg': '#274c77',
-                        '--bg': '#def',
+                        '--fg': '#136f63',
+                        '--bg': '#e9ecef',
                         '--value': teaching_avg,
                       },
                 ]"
@@ -107,17 +109,18 @@
                   ethic_avg < 50
                     ? {
                         '--fg': '#bb435d',
-                        '--bg': '#f4e1e1',
+                        '--bg': '#e9ecef',
                         '--value': ethic_avg,
                       }
                     : {
-                        '--fg': '#274c77',
-                        '--bg': '#def',
+                        '--fg': '#136f63',
+                        '--bg': '#e9ecef',
                         '--value': ethic_avg,
                       },
                 ]"
               ></div>
             </div>
+          </div>
           </div>
         </div>
         <div class="col-9">
@@ -209,7 +212,7 @@
               <div class="mt-3 col-12" v-if="auth_status">
                 <form id="algin-form" class="add-comment">
                   <div class="form-group">
-                    <h4 class="add-rate-title">ثبت امتیاز</h4>
+                    <h4 class="add-rate-comment-title">نظر دهی</h4>
                     <label for="rating-md-no-border" class="mt-3 rate-label"
                       >اخلاق</label
                     >
@@ -246,11 +249,10 @@
                       no-border
                       class="rate"
                     ></b-form-rating>
-                    <h4 class="add-comment-title mt-5">ثبت نظر</h4>
                     <textarea
                       cols="30"
                       rows="7"
-                      class="form-control comment-text-area"
+                      class="form-control comment-text-area mt-3"
                       placeholder="نظر خود را بنویسید ..."
                     ></textarea>
                     <div class="comment-check-box mt-2">
@@ -296,6 +298,7 @@ export default {
       image_url: "",
       name: "",
       email: "",
+      info: "",
       editableComments: [],
       nonEditableComments: [],
       status: "no_show",
@@ -350,6 +353,7 @@ export default {
           this.image_url = response.data.image_url;
           this.name = response.data.name;
           this.email = response.data.email;
+          this.info = response.data.info;
           this.ethic_avg = response.data.ethic_avg;
           this.teaching_avg = response.data.teaching_avg;
           this.grading_avg = response.data.grading_avg;
@@ -374,15 +378,23 @@ export default {
 </script>
 
 <style>
-.frontside .card .card-title,
-.backside .card .card-title {
+.frontside-prof .card .card-title{
   color: #274c77 !important;
 }
 
-.frontside .card .card-body img {
+.frontside-prof .card .card-body img {
   width: 120px;
   height: 120px;
   border-radius: 50%;
+}
+.prof-card {
+  min-height: 450px;
+  width: 270px;
+}
+.avg-rate-card{
+  margin-top: 20px;
+  min-height: 80px;
+  width: 270px;
 }
 
 .progress {
@@ -406,7 +418,6 @@ export default {
 
 div[role="progressbar"] {
   --size: 3rem;
-
   --pgPercentage: var(--value);
   animation: growProgressBar 3s 1 forwards;
   width: var(--size);
@@ -424,11 +435,6 @@ div[role="progressbar"] {
   font-family: Helvetica, Arial, sans-serif;
   font-size: calc(var(--size) / 5);
   color: var(--fg);
-}
-
-div[role="progressbar"]::before {
-  counter-reset: percentage var(--value);
-  content: counter(percentage) "%";
 }
 .first[role="progressbar"]::before {
   content: "اخلاق";
@@ -455,37 +461,30 @@ body {
     margin-top: 0.21429rem !important;
   }
 }
-
 .g-height-50 {
   height: 50px;
 }
-
 .g-width-50 {
   width: 50px !important;
 }
-
 @media (min-width: 0) {
   .g-pa-30 {
     padding: 2.14286rem !important;
   }
 }
-
 .g-bg-secondary {
   background-color: #fafafa !important;
 }
-
 .u-shadow-v18 {
-  box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 50%);
+  border-radius: 20px;
 }
-
 .g-color-gray-dark-v4 {
   color: #777 !important;
 }
-
 .g-font-size-12 {
   font-size: 0.85714rem !important;
 }
-
 .media-comment {
   margin-top: 20px;
 }
@@ -518,47 +517,47 @@ a:hover {
 .add-comment-btn:hover {
   background-color: #274c77 !important;
   color: white;
+  border-radius: 20px;
+  width: 100px;
 }
 .navbar-brand {
   color: white !important;
 }
-.add-comment-title,
-.add-rate-title {
+.add-rate-comment-title {
   color: #025788;
+  text-align: right;
 }
 label {
   color: #025788;
 }
-
 #align-form {
   margin-top: 20px;
 }
-
 .form-group p a {
   color: white;
 }
-
 #darker img {
   margin-right: 15px;
   position: static;
 }
-
 .form-group input,
 .form-group textarea {
-  background-color: #ececec;
-  border-radius: 12px;
+  background-color: #e9ecef;
+  border-radius: 10px;
 }
-
 .add-comment {
   background-color: #fafafa;
-  border-radius: 5px;
+  border-radius: 20px;
+  border-color: #025788;
+  border-width: 1px;
+  border-style: solid;
   padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 50%);
 }
-
 .add-comment-btn {
   padding: 0px 8px !important;
 }
-
 .comment-icon {
   color: #6096ba;
 }
@@ -600,5 +599,8 @@ label {
 .form-control:focus {
   box-shadow: none;
   border-color: #ced4da;
+}
+.gray-text {
+  color: #8b8c89
 }
 </style>

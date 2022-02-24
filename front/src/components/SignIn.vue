@@ -7,13 +7,13 @@
         >
       </b-navbar-brand>
     </b-navbar>
-    <div class="container h-100 register-container">
+    <div class="container h-100 login-container">
       <div class="d-flex justify-content-center">
         <b-card
           title="ورود کاربر"
           tag="article"
           style="width: 40rem"
-          class="mb-2 card-shadow"
+          class="mb-2 card-shadow login-card"
         >
           <b-card-body>
             <b-form>
@@ -22,26 +22,25 @@
               >
               <b-form-input
                 id="inline-form-input-stid"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 login-form"
                 placeholder="شماره دانشجویی"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-code">کد ملی</label>
               <b-form-input
                 id="inline-form-input-code"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 login-form"
                 placeholder="کد ملی"
               ></b-form-input>
+              <b-button class="mt-3 signin-btn btn-shadow" type="submit">ورود</b-button>
               <p class="check-text mt-3">
-                قبلا ثبت‌نام نکرده‌اید؟
                 <router-link
                   class="route-text"
                   :to="{ path: '/register' }"
                   replace
-                  >ثبت‌نام</router-link
+                  >قبلا ثبت‌نام نکرده‌اید؟</router-link
                 >
               </p>
-              <b-button class="mt-3 signin-btn" type="submit">ورود</b-button>
             </b-form>
           </b-card-body>
         </b-card>
@@ -55,27 +54,38 @@ export default {};
 </script>
 
 <style scoped>
-.register-container {
-  padding-top: 10%;
+.login-container {
+  padding-top: 13%;
   margin-top: auto;
   margin-bottom: auto;
+}
+.login-card {
+  border-radius: 20px;
+}
+.login-card .card-body {
+  padding-bottom: 0.3rem !important;
+}
+.card-shadow {
+  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 50%);
+}
+.btn-shadow {
+  box-shadow: 0 5px 10px -2px rgb(0 0 0 / 30%);
+}
+.signin-btn {
+  background-color: #274c77 !important;
+  border-radius: 20px;
+  width: 100px;
+}
+.card-title {
+  color: #274c77;
 }
 .check-text {
   text-align: left;
   color: #274c77;
 }
-.card-shadow {
-  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 15%);
-}
-.signin-btn {
-  background-color: #274c77 !important;
-}
-.card-title {
-  color: #274c77;
-}
 .route-text,
 .route-text:hover {
-  color: #6096ba !important;
+  color: #274c77 !important;
 }
 .navbar-color {
   background-color: #274c77 !important;
@@ -94,5 +104,13 @@ a,
 a:hover {
   color: white !important;
   text-decoration: none !important;
+}
+.login-form {
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
 }
 </style>

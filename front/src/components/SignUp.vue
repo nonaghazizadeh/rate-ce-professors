@@ -15,14 +15,14 @@
           title="ثبت نام کاربر"
           tag="article"
           style="width: 40rem"
-          class="mb-2 card-shadow"
+          class="mb-2 card-shadow register-card"
         >
           <b-card-body>
             <b-form>
               <label class="sr-only" for="inline-form-input-name">نام</label>
               <b-form-input
                 id="inline-form-input-name"
-                class="mb-2 mr-sm-2 mb-sm-0"
+                class="mb-2 mr-sm-2 mb-sm-0 register-form"
                 placeholder="نام"
               ></b-form-input>
 
@@ -31,7 +31,7 @@
               >
               <b-form-input
                 id="inline-form-input-lastname"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 register-form"
                 placeholder="نام خانوادگی"
               ></b-form-input>
 
@@ -40,23 +40,24 @@
               >
               <b-form-input
                 id="inline-form-input-stid"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 register-form"
                 placeholder="شماره دانشجویی"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-code">کد ملی</label>
               <b-form-input
                 id="inline-form-input-code"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 register-form"
                 placeholder="کد ملی"
               ></b-form-input>
-              <p class="check-text mt-3">
-                قبلا ثبت‌نام کرده‌اید؟
+              <b-button class="mt-3 signup-btn btn-shadow" @click="registerUser()"
+                >ثبت نام</b-button
+              >
+              <p class="check-text">
                 <router-link class="route-text" :to="{ path: '/login' }" replace
-                  >ورود به سایت</router-link
+                  >قبلا ثبت‌نام کرده‌اید؟</router-link
                 >
               </p>
-              <b-button class="mt-3 signup-btn" type="submit">ثبت نام</b-button>
             </b-form>
           </b-card-body>
         </b-card>
@@ -66,7 +67,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    registerUser() {
+      this.$router.replace("/");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -75,22 +82,33 @@ export default {};
   margin-top: auto;
   margin-bottom: auto;
 }
+.register-card {
+  border-radius: 20px;
+}
+.register-card .card-body {
+  padding-bottom: 0.3rem !important;
+}
 .check-text {
   text-align: left;
   color: #274c77;
 }
 .card-shadow {
-  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 15%);
+  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 50%);
+}
+.btn-shadow {
+  box-shadow: 0 5px 10px -2px rgb(0 0 0 / 30%);
 }
 .signup-btn {
   background-color: #274c77 !important;
+  border-radius: 20px;
+  width: 100px;
 }
 .card-title {
   color: #274c77;
 }
 .route-text,
 .route-text:hover {
-  color: #6096ba !important;
+  color: #274c77 !important;
 }
 .navbar-color {
   background-color: #274c77 !important;
@@ -109,5 +127,13 @@ a,
 a:hover {
   color: white !important;
   text-decoration: none !important;
+}
+.register-form {
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
 }
 </style>

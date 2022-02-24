@@ -25,9 +25,17 @@
     </div>
     <loader v-if="loading" />
     <div v-if="!loading" class="container mt-5">
+      <div class="search-container">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="استاد مورد نظر خود را جستجو کنید..."
+          v-model="search"
+        />
+      </div>
       <div class="row professors-container">
         <div
-          v-for="prof in professors"
+          v-for="prof in filteredList"
           class="col-xs-12 col-sm-6 col-md-4"
           :key="prof.id"
         >
@@ -54,10 +62,10 @@
                     <p class="card-text">
                       {{ prof.info }}
                     </p>
-                    <ul>
+                    <ul class="text-center">
                       <li class="list-inline-item">
                         <a
-                          class="social-icon text-xs-center"
+                          class="social-icon text-center"
                           target="_blank"
                           :href="'mailto:' + prof.email"
                         >
@@ -92,11 +100,19 @@ export default {
   components: {
     Loader,
   },
+  computed: {
+    filteredList() {
+      return this.professors.filter((post) => {
+        return post.name.toLowerCase().includes(this.search.toLowerCase());
+      });
+    },
+  },
   created() {
     this.getProfessorsData();
   },
   data() {
     return {
+      search: "",
       loading: true,
       professors: [],
     };
@@ -106,7 +122,6 @@ export default {
       axios
         .get(`https://617534a508834f0017c70b5c.mockapi.io/api/v1/profs`)
         .then((response) => {
-          console.log(response.data);
           this.professors = response.data;
         })
         .catch((e) => {
@@ -136,7 +151,7 @@ body {
   -o-transform: rotateY(0deg);
   -ms-transform: rotateY(0deg);
   transform: rotateY(0deg);
-  border-radius: 0.25rem;
+  border-radius: 20px;
 }
 
 .image-flip:hover .frontside,
@@ -178,9 +193,9 @@ body {
   -o-transform: rotateY(-180deg);
   -ms-transform: rotateY(-180deg);
   transform: rotateY(-180deg);
-  -webkit-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
-  -moz-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
-  box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+  -webkit-box-shadow: 5px 7px 9px -4px rgb(0 0 0 / 50%);
+  -moz-box-shadow: 5px 7px 9px -4px rgb(0 0 0 / 50%);
+  box-shadow: 5px 7px 9px -4px rgb(0 0 0 / 50%);
 }
 
 .frontside,
@@ -204,6 +219,7 @@ body {
 .frontside .card,
 .backside .card {
   min-height: 312px;
+  border-radius: 20px;
 }
 
 .backside .card a {
@@ -221,9 +237,12 @@ body {
   height: 120px;
   border-radius: 50%;
 }
-
+.backside ul {
+  margin-right: -2.6rem;
+}
 .back-card-body {
   padding-top: 70px !important;
+
 }
 
 .front-card-body {
@@ -242,7 +261,11 @@ a:hover {
   background-color: #274c77 !important;
 }
 .professors-container {
-  margin-top: 5rem !important;
+  margin-top: 3rem !important;
+}
+.search-container {
+  margin-top: 2rem !important;
+  padding-top: 30px;
 }
 a,
 a:hover {
@@ -258,5 +281,32 @@ a:hover {
 }
 .email-icon {
   color: #6096ba;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 24px;
+  background-color: transparent;
+  transition: transform 250ms ease-in-out;
+  font-size: 14px;
+  line-height: 18px;
+  color: #61625f;
+  background-color: transparent;
+  border-radius: 50px;
+  border: 1px solid #274c77;
+  transition: all 250ms ease-in-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+.search-input::placeholder {
+  color: #8b8c89;
+  text-transform: uppercase;
+}
+.search-input:hover,
+.search-input:focus {
+  padding: 12px 0;
+  outline: 0;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #274c77;
+  border-radius: 0;
 }
 </style>

@@ -7,13 +7,13 @@
         >
       </b-navbar-brand>
     </b-navbar>
-    <div class="container h-100 register-container">
+    <div class="container h-100 admin-container">
       <div class="d-flex justify-content-center">
         <b-card
           title="ورود مدیر"
           tag="article"
           style="width: 40rem"
-          class="mb-2 card-shadow"
+          class="mb-2 card-shadow admin-card"
         >
           <b-card-body>
             <b-form>
@@ -22,17 +22,17 @@
               >
               <b-form-input
                 id="inline-form-input-username"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 admin-form"
                 placeholder="نام کاربری"
               ></b-form-input>
 
               <label class="sr-only" for="inline-form-input-password">رمز عبور</label>
               <b-form-input
                 id="inline-form-input-password"
-                class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                class="mb-2 mr-sm-2 mb-sm-0 mt-3 admin-form"
                 placeholder="رمز عبور"
               ></b-form-input>
-              <b-button class="mt-3 signin-btn" type="submit">ورود</b-button>
+              <b-button class="mt-3 signin-btn btn-shadow">ورود</b-button>
             </b-form>
           </b-card-body>
         </b-card>
@@ -46,27 +46,30 @@ export default {};
 </script>
 
 <style scoped>
-.register-container {
+.admin-container {
   padding-top: 10%;
   margin-top: auto;
   margin-bottom: auto;
 }
-.check-text {
-  text-align: left;
-  color: #8b8c89;
+.admin-card{
+  border-radius: 20px;
+}
+.admin-card .card-body {
+  padding-bottom: 0.7rem !important;
 }
 .card-shadow {
-  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 15%);
+  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 50%);
+}
+.btn-shadow {
+  box-shadow: 0 5px 10px -2px rgb(0 0 0 / 30%);
 }
 .signin-btn {
   background-color: #274c77 !important;
+  border-radius: 20px;
+  width: 100px;
 }
 .card-title {
   color: #274c77;
-}
-.route-text,
-.route-text:hover {
-  color: #6096ba !important;
 }
 .navbar-color {
   background-color: #274c77 !important;
@@ -85,5 +88,13 @@ a,
 a:hover {
   color: white !important;
   text-decoration: none !important;
+}
+.admin-form {
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #ced4da;
 }
 </style>

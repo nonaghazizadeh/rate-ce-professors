@@ -45,43 +45,13 @@
               </div>
             </b-card-body>
           </b-card>
-          <b-card
-            v-if="retryAuth"
-            title="احراز هویت مجدد"
-            tag="article"
-            style="width: 20rem"
-            class="mb-2 card-shadow"
-          >
-            <b-card-body>
-              <b-form>
-                <label class="sr-only" for="inline-form-input-stid"
-                  >شماره دانشجویی</label
-                >
-                <b-form-input
-                  id="inline-form-input-stid"
-                  class="mb-2 mr-sm-2 mb-sm-0 mt-3"
-                  placeholder="شماره دانشجویی"
-                ></b-form-input>
-
-                <label class="sr-only" for="inline-form-input-code"
-                  >کد ملی</label
-                >
-                <b-form-input
-                  id="inline-form-input-code"
-                  class="mb-2 mr-sm-2 mb-sm-0 mt-3"
-                  placeholder="کد ملی"
-                ></b-form-input>
-                <b-button class="mt-3 auth-btn" type="submit">ثبت </b-button>
-              </b-form>
-            </b-card-body>
-          </b-card>
         </div>
 
         <div class="col-5 info-part">
           <b-card
             title="ثبت درخواست افزودن استاد"
             tag="article"
-            style="width: 40rem; height: 15rem"
+            style="width: 43rem; height: 15rem"
             class="mb-2 card-shadow user-card"
           >
             <b-card-body>
@@ -91,10 +61,10 @@
                 >
                 <b-form-input
                   id="inline-form-input-pname"
-                  class="mb-2 mr-sm-2 mb-sm-0 mt-3"
+                  class="mb-2 mr-sm-2 mb-sm-0 mt-3 req-form"
                   placeholder="نام استاد"
                 ></b-form-input>
-                <b-button class="mt-3 req-btn" type="submit"
+                <b-button class="mt-4 req-btn" @click="addProfessorRequest()"
                   >ثبت درخواست</b-button
                 >
               </b-form>
@@ -120,7 +90,6 @@ export default {
       username: "",
       stid: "",
       authStatus: "",
-      retryAuth: false,
     };
   },
   created() {
@@ -139,7 +108,6 @@ export default {
           this.stid = response.data.student_number;
           if (response.data.auth_status === "reject") {
             this.authStatus = "رد شده";
-            this.retryAuth = true;
           } else if (response.data.auth_status === "accept") {
             this.authStatus = "تایید شده";
           } else {
@@ -153,6 +121,23 @@ export default {
           this.loading = false;
         });
     },
+    addProfessorRequest() {},
+    makeSuccessToast() {
+      this.$bvToast.toast('درخواست افزودن استاد با موفقیت ثبت شد.', {
+        autoHideDelay: 5000,
+        toaster: 'b-toaster-bottom-left',
+        noCloseButton: true,
+        bodyClass: 'right-text'
+      });
+    },
+    makeFailToast() {
+      this.$bvToast.toast('ثبت درخواست افزودن استاد ناموفق بود.', {
+        autoHideDelay: 5000,
+        toaster: 'b-toaster-bottom-left',
+        noCloseButton: true,
+        bodyClass: 'right-text'
+      });
+    }
   },
 };
 </script>
@@ -164,12 +149,15 @@ export default {
 .user-card-body {
   padding-top: 20px !important;
 }
+.user-card {
+  border-radius: 20px;
+}
 
 body {
   background: #e7ecef;
 }
 .info-part {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 .navbar-color {
   background-color: #274c77 !important;
@@ -195,12 +183,21 @@ a:hover {
 .info-content {
   margin-right: 10px;
 }
-.auth-btn,
 .req-btn {
   background-color: #274c77 !important;
+  border-radius: 20px;
+  width: 130px;
+  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 30%);
+}
+.req-form {
+  background-color: #e9ecef;
+  border-radius: 10px;
 }
 .form-control:focus {
   box-shadow: none;
   border-color: #ced4da;
+}
+.card-shadow {
+  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 50%);
 }
 </style>

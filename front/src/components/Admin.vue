@@ -2,7 +2,11 @@
   <div>
     <div>
       <b-navbar toggleable="expand-lg" class="navbar-color">
-        <b-navbar-brand>سایت اساتید دانشکده مهندسی کامپیوتر</b-navbar-brand>
+        <b-navbar-brand
+          ><router-link :to="{ path: '/' }" replace
+            >اساتید دانشکده مهندسی کامپیوتر</router-link
+          ></b-navbar-brand
+        >
         <b-navbar-nav class="mr-auto">
           <b-nav-form>
             <b-button size="sm" class="m-2 my-sm-0 px-3 navbar-btn"
@@ -15,14 +19,10 @@
       </b-navbar>
     </div>
     <div>
-      <b-tabs
-        class=""
-        active-nav-item-class="bg-light bg-gradient"
-        justified
-      >
-        <b-tab title="بررسی احراز هویت‌ها" title-link-class="text-dark" active
-          ><authentication :authentications="authentications"
-        /></b-tab>
+      <b-tabs class="" active-nav-item-class="bg-light bg-gradient" justified>
+        <b-tab title="بررسی احراز هویت‌ها" title-link-class="text-dark" active>
+          <authentication />
+        </b-tab>
         <b-tab title="بررسی درخواست‌ افزودن استاد" title-link-class="text-dark">
           <add-prof />
         </b-tab>
@@ -37,24 +37,7 @@ import Authentication from "./Authentication.vue";
 export default {
   components: { Authentication, AddProf },
   data() {
-    return {
-      authentications: [
-        {
-          id: 1,
-          firstname: "نونا",
-          lastname: "قاضی زاده",
-          student_number: "۹۸۱۷۱۰۰۷",
-          code_meli: "۰۴۴۰۹۷۹۶۵۱",
-        },
-        {
-          id: 2,
-          firstname: "شایان",
-          lastname: "محمدی زاده",
-          student_number: "۹۸۱۰۲۲۷۳",
-          code_meli: "۰۴۴۰۹۷۹۶۵۱",
-        },
-      ],
-    };
+    return {};
   },
 };
 </script>
@@ -66,13 +49,21 @@ body {
 .navbar-color {
   background-color: #274c77 !important;
 }
-a,
-a:hover {
-  color: #274c77;
-  text-decoration: none;
+.navbar-btn a,
+.nabar-btn a:hover {
+  color: #274c77 !important;
+  text-decoration: none !important;
 }
 .navbar-btn {
   background-color: #e7ecef !important;
   color: #274c77;
+}
+.navbar-brand {
+  color: white !important;
+}
+a,
+a:hover {
+  color: white !important;
+  text-decoration: none !important;
 }
 </style>

@@ -37,7 +37,7 @@
               title="افزودن استاد"
               tag="article"
               style="width: 30rem; height: 25rem"
-              class="mb-2 card-shadow"
+              class="mb-2 card-shadow add-prof-card"
             >
               <b-card-body>
                 <b-form>
@@ -46,7 +46,7 @@
                   >
                   <b-form-input
                     id="inline-form-input-name"
-                    class="mb-2 mb-sm-0"
+                    class="mb-2 mb-sm-0 add-form"
                     placeholder="نام استاد"
                     v-model="profName"
                   ></b-form-input>
@@ -56,7 +56,7 @@
                   >
                   <b-form-input
                     id="inline-form-input-image"
-                    class="mb-2 mb-sm-0 mt-3"
+                    class="mb-2 mb-sm-0 mt-3 add-form"
                     placeholder="آدرس عکس استاد"
                     v-model="profImageUrl"
                   ></b-form-input>
@@ -67,18 +67,18 @@
                   <b-form-input
                     id="inline-form-input-email"
                     type="email"
-                    class="mb-2 mb-sm-0 mt-3"
+                    class="mb-2 mb-sm-0 mt-3 add-form"
                     placeholder="آدرس ایمیل استاد"
                     v-model="profEmail"
                   ></b-form-input>
                   <b-form-textarea
                     id="textarea-default"
                     placeholder="توضیحات"
-                    class="mt-3"
+                    class="mt-3 add-form"
                     v-model="profInfo"
                   ></b-form-textarea>
 
-                  <b-button class="mt-3 add-prof-btn" @click="addNewProfessor()"
+                  <b-button class="mt-3 add-prof-btn btn-shadow" @click="addNewProfessor()"
                     >ثبت استاد</b-button
                   >
                 </b-form>
@@ -174,18 +174,30 @@ export default {
 .add-card {
   margin-top: 82px;
 }
+.btn-shadow {
+  box-shadow: 0 5px 10px -2px rgb(0 0 0 / 30%);
+}
 .card-shadow {
-  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 15%);
+  box-shadow: 0 5px 10px -6px rgb(0 0 0 / 50%);
+}
+.add-prof-card {
+  border-radius: 20px;
 }
 .add-prof-btn,
 .add-prof-btn:hover {
   background-color: #274c77 !important;
+  border-radius: 20px;
+  width: 100px;
+}
+.add-form {
+  background-color: #e9ecef;
+  border-radius: 10px;
 }
 .card-title {
   color: #274c77;
 }
 .prof-table {
-  border-radius: 15px;
+  border-radius: 20px;
   margin-top: 35px;
 }
 .table {
